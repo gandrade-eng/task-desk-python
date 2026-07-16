@@ -1,0 +1,7 @@
+Imagens em geral
+
+background.png
+logo.png
+banner.png
+fonts/
+sounds/

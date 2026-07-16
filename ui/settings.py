@@ -1,3 +1,13 @@
+# Janela de configurações.
+
+# Exemplo:
+
+# idioma
+# tema claro/escuro
+# salvar automaticamente
+# notificações
+
+
 LANGUAGES = {
     "pt": {
         "welcome": "Bem-vindo!",
@@ -6,6 +16,8 @@ LANGUAGES = {
         "choice": "Escolha: ",
         "exit": "Saindo...",
         "addTask": "Qual Tarefa gostaria de adicionar?\n",
+        "addTaskDate": "Qual a Data da Tarefa?",
+        "listTasksEmpty": "Nenhuma tarefa cadastrada.",
         "listTasks": "As suas Tarefas são:",
         "removeTask": "Qual Tarefa deseja remover? ",
         "completeTask": "Qual Tarefa conseguiu completar? "

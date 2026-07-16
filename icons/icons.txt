@@ -1,0 +1,6 @@
+Ícones.
+
+add.png
+delete.png
+edit.png
+check.png
