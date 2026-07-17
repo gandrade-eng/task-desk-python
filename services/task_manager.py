@@ -1,13 +1,28 @@
+# external imports
+from datetime import datetime
+# internal imports
 from ui.settings import LANGUAGES, language
 from services.database import saveTask
 
+# today = datetime.today()
+# if date < today:
+#     print("Essa tarefa está atrasada!")
+
 def addTask(tasks):
-    task = input(LANGUAGES[language]["addTask"])
-    date = input(LANGUAGES[language]["addTaskDate"])
+    task_title = input(LANGUAGES[language]["addTask"])
+
+    while True:
+        try:
+            date_str = input(LANGUAGES[language]["addTaskDate"])
+            due_date = datetime.strptime(date_str, "%d/%m/%Y")
+            break
+        except ValueError:
+            print(LANGUAGES[language]["addTaskDateError"])
+
     newTask = {
-        "title": task,
+        "title": task_title,
         "completed": False,
-        "date": date
+        "date": due_date.strftime("%d/%m/%Y")
     }
     tasks.append(newTask)
 
