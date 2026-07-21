@@ -15,23 +15,11 @@ O PySide6 é uma ótima escolha porque produz interfaces mais profissionais do q
 
 
 ## ANTES DE TUDO
-Prioridade
-Cada tarefa também pode ter uma prioridade:
-Título: Estudar Python
-Prioridade:
-1 - Alta
-2 - Média
-3 - Baixa
-
 Data
 Adicionar:
 Prazo:
 12/07/2026
 Não precisa validar a data no começo.
-
-Salvar no computador
-Bem-vindo!
-3 tarefas carregadas.
 
 Pesquisa
 Pesquisar: Python
@@ -106,21 +94,6 @@ Você aprenderá a usar:
 pasta Startup
 Registro do Windows
 ou Agendador de Tarefas
-
-
-
-## Minimizar para a bandeja (System Tray)
-Em vez de fechar o programa: [X]
-
-ele fica perto do relógio.
-Exemplo:
-
-🔔 Todo List
-
-Ao clicar:
-Abrir
-Nova tarefa
-Sair
 
 
 
