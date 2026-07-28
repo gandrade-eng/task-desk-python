@@ -9,7 +9,7 @@
 
 # É praticamente a tela principal.
 
-from settings import THEMES, theme, LANGUAGES, language
+from config.settings import THEMES, LANGUAGES
 
 from PySide6.QtCore import QSize
 from PySide6.QtGui import Qt, QIcon
@@ -20,7 +20,7 @@ from PySide6.QtWidgets import (
     QApplication, QPushButton, QCheckBox
 )
 
-# from ..services.database import loadSettings
+from services.settings_manager import loadSettings
 
 import sys
 
@@ -118,9 +118,10 @@ class customButton(QPushButton):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setup_ui()
 
-        # self.Settings = loadSettings
+        self.settings = loadSettings()
+
+        self.setup_ui()
 
         self.set_active_menu(self.left_menu_home_button)
         self.left_menu_home_button.clicked.connect(self.home_clicked)
@@ -140,40 +141,29 @@ class MainWindow(QMainWindow):
 
         # Central Frame
         self.central_frame = QFrame()
+        self.setCentralWidget(self.central_frame)
 
-        # Main Layout
-        # //////////////////////////////////////////////////////////
-        self.main_layout = QHBoxLayout(self.central_frame)
-        self.main_layout.setContentsMargins(0, 0, 0, 0)
-        self.main_layout.setSpacing(0)
+        # Central Frame Layout
+        self.central_frame_layout = QHBoxLayout(self.central_frame)
+        self.central_frame_layout.setContentsMargins(0, 0, 0, 0)
+        self.central_frame_layout.setSpacing(0)
 
         # Left Menu 
-        # //////////////////////////////////////////////////////////
         self.create_left_menu()
         
         # Line
-        # //////////////////////////////////////////////////////////
         self.line = QFrame()
         self.line.setFixedWidth(2)
-        self.line.setStyleSheet(THEMES[theme]["line"])
-
+        self.line.setStyleSheet(THEMES[self.settings["theme"]]["line"])
+        
         # Main Menu
-        # //////////////////////////////////////////////////////////
         self.create_main_menu()
 
-        # Pages
-        # //////////////////////////////////////////////////////////
         # Page Home
-        self.page_home = QWidget()
-        layout_page_home = QVBoxLayout()
-        label_page_home = QLabel("Hello World")
-        label_page_home.setStyleSheet("color: black;")
-        label_page_home.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout_page_home.addWidget(label_page_home)
-        self.page_home.setLayout(layout_page_home)
+        self.create_page_home()
 
         # Page Tasks
-        self.page_tasks = QWidget()
+        self.create_page_tasks()
 
         # Page Settings
         self.create_page_settings()
@@ -184,26 +174,26 @@ class MainWindow(QMainWindow):
         self.pages.addWidget(self.page_tasks)
         self.pages.addWidget(self.page_settings)
 
-        # Add in Window
-        # //////////////////////////////////////////////////////////
-        self.main_layout.addWidget(self.left_menu)
-        self.main_layout.addWidget(self.line)
-        self.main_layout.addWidget(self.main_menu)
+        # Add in Main
+        self.central_frame_layout.addWidget(self.left_menu)
+        self.central_frame_layout.addWidget(self.line)
+        self.central_frame_layout.addWidget(self.main_menu)
 
+        # Add in Left Menu
         self.left_menu_layout.addWidget(self.left_menu_top_frame)
         self.left_menu_layout.addItem(self.left_menu_spacer)
         self.left_menu_layout.addWidget(self.left_menu_bottom_frame)
         self.left_menu_layout.addWidget(self.left_menu_version_label)
 
+        # Add in Left Menu Top
         self.left_menu_top_layout.addWidget(self.left_menu_home_button)
         self.left_menu_top_layout.addWidget(self.left_menu_tasks_button)
 
+        # Add in Left Menu Bottom
         self.left_menu_bottom_layout.addWidget(self.left_menu_settings_button)
 
+        # Add in Main Menu
         self.main_menu_layout.addWidget(self.pages)
-
-
-        self.setCentralWidget(self.central_frame)
 
     # Create Left Menu
     # //////////////////////////////////////////////////////////
@@ -211,7 +201,7 @@ class MainWindow(QMainWindow):
         self.left_menu = QFrame()
         self.left_menu.setMinimumWidth(75)
         self.left_menu.setMaximumWidth(75)
-        self.left_menu.setStyleSheet(THEMES[theme]["left_menu"])
+        self.left_menu.setStyleSheet(THEMES[self.settings["theme"]]["left_menu"])
 
 
         self.left_menu_layout = QVBoxLayout(self.left_menu)
@@ -221,7 +211,7 @@ class MainWindow(QMainWindow):
 
         self.left_menu_top_frame = QFrame()
         self.left_menu_top_frame.setMinimumHeight(50)
-        # self.left_menu_top_frame.setStyleSheet(THEMES[theme]["left_menu_top_frame"])
+        # self.left_menu_top_frame.setStyleSheet(THEMES[self.settings["theme"]]["left_menu_top_frame"])
 
 
         self.left_menu_top_layout = QVBoxLayout(self.left_menu_top_frame)
@@ -270,18 +260,30 @@ class MainWindow(QMainWindow):
     # //////////////////////////////////////////////////////////
     def create_main_menu(self):
         self.main_menu = QFrame()
-        self.main_menu.setStyleSheet(THEMES[theme]["main_menu"])
+        self.main_menu.setStyleSheet(THEMES[self.settings["theme"]]["main_menu"])
 
         self.main_menu_layout = QHBoxLayout(self.main_menu)
         self.main_menu_layout.setContentsMargins(0, 0, 0, 0)
         self.main_menu_layout.setSpacing(0)
 
+    # Create Page Home
+    # //////////////////////////////////////////////////////////
     def create_page_home(self):
-        print()
+        self.page_home = QWidget()
+        layout_page_home = QVBoxLayout()
+        label_page_home = QLabel("Hello World")
+        label_page_home.setStyleSheet("color: black;")
+        label_page_home.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout_page_home.addWidget(label_page_home)
+        self.page_home.setLayout(layout_page_home)
 
+    # Create Page Tasks
+    # //////////////////////////////////////////////////////////
     def create_page_tasks(self):
-        print()
+        self.page_tasks = QWidget()
 
+    # Create Page Settings
+    # //////////////////////////////////////////////////////////
     def create_page_settings(self):
         self.page_settings_layout = QVBoxLayout()
         self.page_settings_layout.setContentsMargins(50, 50, 50, 50)
@@ -293,8 +295,8 @@ class MainWindow(QMainWindow):
         self.page_settings_theme = QLabel()
         self.page_settings_theme.setStyleSheet("background-color: #D1D5DB; border-radius: 10px;")
 
-        self.page_settings_theme_title = QLabel(LANGUAGES[language]["theme"])
-        self.page_settings_theme_title.setStyleSheet(THEMES[theme]["page_settings_theme_title"])
+        self.page_settings_theme_title = QLabel(LANGUAGES[self.settings["language"]]["theme"])
+        self.page_settings_theme_title.setStyleSheet(THEMES[self.settings["theme"]]["page_settings_theme_title"])
 
         self.page_settings_all_themes = QHBoxLayout()
 
@@ -343,8 +345,8 @@ class MainWindow(QMainWindow):
         self.page_settings_language = QLabel()
         self.page_settings_language.setStyleSheet("background-color: #D1D5DB; border-radius: 10px;")
 
-        self.page_settings_language_title = QLabel(LANGUAGES[language]["language"])
-        self.page_settings_language_title.setStyleSheet(THEMES[theme]["page_settings_language_title"])
+        self.page_settings_language_title = QLabel(LANGUAGES[self.settings["language"]]["language"])
+        self.page_settings_language_title.setStyleSheet(THEMES[self.settings["theme"]]["page_settings_language_title"])
 
         self.page_settings_language_layout = QVBoxLayout(self.page_settings_language)
         self.page_settings_language_layout.setContentsMargins(20, 20, 20, 20)
@@ -356,8 +358,8 @@ class MainWindow(QMainWindow):
         self.page_settings_notifications = QLabel()
         self.page_settings_notifications.setStyleSheet("background-color: #D1D5DB; border-radius: 10px;")
         
-        self.page_settings_notifications_title = QLabel(LANGUAGES[language]["notifications"])
-        self.page_settings_notifications_title.setStyleSheet(THEMES[theme]["page_settings_notifications_title"])
+        self.page_settings_notifications_title = QLabel(LANGUAGES[self.settings["language"]]["notifications"])
+        self.page_settings_notifications_title.setStyleSheet(THEMES[self.settings["theme"]]["page_settings_notifications_title"])
 
         self.page_settings_notifications_checkbox = QCheckBox("Ativar notificações")
 
@@ -374,6 +376,8 @@ class MainWindow(QMainWindow):
         self.page_settings_layout.addWidget(self.page_settings_language)
         self.page_settings_layout.addWidget(self.page_settings_notifications)
 
+
+    # //////////////////////////////////////////////////////////
     # //////////////////////////////////////////////////////////
     def set_active_menu(self, active_button):
         buttons = [

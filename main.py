@@ -1,5 +1,5 @@
 # import ui.settings
-from ui.settings import LANGUAGES, language
+from config.settings import LANGUAGES, language
 from services.database import loadTasks
 from services.task_manager import addTask, listTasks, removeTask, completeTask
 
@@ -11,7 +11,6 @@ def main ():
 
     main_loop()
 
-    print(LANGUAGES[language]["welcome"])
     while(True):
         print(LANGUAGES[language]["menu"])
         print(LANGUAGES[language]["menuChoices"])

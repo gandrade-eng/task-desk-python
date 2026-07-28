@@ -1,7 +1,7 @@
 # external imports
 from datetime import datetime
 # internal imports
-from ui.settings import LANGUAGES, language
+from config.settings import LANGUAGES, language
 from services.database import saveTask
 
 # today = datetime.today()
