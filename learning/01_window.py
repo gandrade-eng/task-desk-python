@@ -31,13 +31,16 @@ class MainWindow(QMainWindow):
     
     def home_clicked(self):
         self.set_active_menu(self.left_menu_home_button)
+        self.pages.setCurrentWidget(self.page_1)
         self.home_button()
 
     def tasks_clicked(self):
         self.set_active_menu(self.left_menu_tasks_button)
+        self.pages.setCurrentWidget(self.page_2)
 
     def settings_clicked(self):
         self.set_active_menu(self.left_menu_settings_button)
+        self.pages.setCurrentWidget(self.page_3)
 
     def set_active_menu(self, active_button):
         buttons = [
@@ -48,7 +51,8 @@ class MainWindow(QMainWindow):
 
         for button in buttons:
             button.set_active(button == active_button)
-    
+
+    # Animation
     def home_button(self):
         # self.ui.left_menu
         menu_width = self.left_menu.width()
@@ -156,32 +160,36 @@ class MainWindow(QMainWindow):
         self.top_label_right = QLabel("Teste")
         self.top_label_right.setStyleSheet("font: 700 9pt 'Segoe UI'")
 
-        # Bottom Bar
-        # //////////////////////////////////////////////////////////
-        self.bottom_bar = QFrame()
-        self.bottom_bar.setMinimumHeight(30)
-        self.bottom_bar.setMaximumHeight(30)
-        self.bottom_bar.setStyleSheet("background-color: #6C4CF1")
-
-        self.bottom_bar_layout = QHBoxLayout(self.bottom_bar)
-        self.bottom_bar_layout.setContentsMargins(10, 0, 10, 0)
-        self.bottom_bar_layout.setSpacing(0)
-
-        # Bottom Bar - Left Label
-        self.bottom_label_left = QLabel("Criado por: Guilherme A N Medeiros")
-        self.bottom_label_left.setStyleSheet("font: 700 9pt 'Segoe UI'")
-
-        # Bottom Bar - Spacer
-        self.bottom_spacer = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        # Bottom Bar - Right Label
-        self.bottom_label_right = QLabel("Version 1.0.0")
-        self.bottom_label_right.setStyleSheet("font: 700 9pt 'Segoe UI'")
-
         # Page
         # //////////////////////////////////////////////////////////
         self.pages = QStackedWidget()
         self.pages.setStyleSheet("font-size: 12pt; color: #1F2430")
+
+        self.pages_text = QLabel("Teste")
+        self.pages_text.setStyleSheet("font: 700 9pt 'Segoe UI'")
+
+        # Page_1
+        self.page_1 = QWidget()
+        layout_page1 = QVBoxLayout()
+        label_page1 = QLabel("Hello World")
+        label_page1.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout_page1.addWidget(label_page1)
+        self.page_1.setLayout(layout_page1)
+
+        # Page_2
+        self.page_2 = QWidget()
+        layout_page2 = QVBoxLayout()
+        label_page2 = QLabel("World")
+        label_page2.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout_page2.addWidget(label_page2)
+        self.page_2.setLayout(layout_page2)
+
+        # Page_3
+        self.page_3 = QWidget()
+
+        self.pages.addWidget(self.page_1)
+        self.pages.addWidget(self.page_2)
+        self.pages.addWidget(self.page_3)
 
         # Main Layout
         # //////////////////////////////////////////////////////////
@@ -202,17 +210,11 @@ class MainWindow(QMainWindow):
         # Add in Content Layout
         self.content_layout.addWidget(self.top_bar)
         self.content_layout.addWidget(self.pages)
-        self.content_layout.addWidget(self.bottom_bar)
 
         # Add in Top Bar
         self.top_bar_layout.addWidget(self.top_label_left)
         self.top_bar_layout.addItem(self.top_spacer)
         self.top_bar_layout.addWidget(self.top_label_right)
-
-        # Add in Bottom Bar
-        self.bottom_bar_layout.addWidget(self.bottom_label_left)
-        self.bottom_bar_layout.addItem(self.bottom_spacer)
-        self.bottom_bar_layout.addWidget(self.bottom_label_right)
 
         # Add in Left Menu
         self.left_menu_layout.addWidget(self.left_menu_top_frame)
@@ -226,6 +228,8 @@ class MainWindow(QMainWindow):
 
         # Add in Left Menu - Bottom
         self.left_menu_bottom_layout.addWidget(self.left_menu_settings_button)
+
+        # Add in Page
 
         self.setCentralWidget(self.central_frame)
 

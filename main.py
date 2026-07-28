@@ -3,9 +3,13 @@ from ui.settings import LANGUAGES, language
 from services.database import loadTasks
 from services.task_manager import addTask, listTasks, removeTask, completeTask
 
+from ui.main_window import main_loop
+
 def main ():
     # Loading the File
     tasks = loadTasks()
+
+    main_loop()
 
     print(LANGUAGES[language]["welcome"])
     while(True):

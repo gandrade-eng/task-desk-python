@@ -10,8 +10,15 @@
 
 LANGUAGES = {
     "pt": {
+        "home": "Menu",
+        "tasks": "Tarefas",
+        "settings": "Configurações",
+        "theme": "🎨 Tema",
+        "language": "🌐 Linguagem",
+        "notifications": "🔔 Notificações",
+
+
         "welcome": "Bem-vindo!",
-        "menu": "===== MENU =====",
         "menuChoices": "1 - Adicionar Tarefa\n2 - Listar Tarefas\n3 - Remover Tarefa\n4 - Marcar Tarefa como Completa\n5 - Sair",
         "choice": "Escolha: ",
         "exit": "Saindo...",
@@ -31,4 +38,19 @@ LANGUAGES = {
     }
 }
 
+THEMES = {
+    "white": {
+        "left_menu": "background-color: #F3F4F6",
+        "left_menu_top_frame": "background-color: #E9ECEF",
+        "line": "background-color: #E9ECEF; border: none",
+        "main_menu":"background-color: #FFFFFF",
+
+
+        "page_settings_theme_title": "font-size: 18px; font-weight: bold; color: black;",
+        "page_settings_language_title": "font-size: 18px; font-weight: bold; color: black;",
+        "page_settings_notifications_title": "font-size: 18px; font-weight: bold; color: black;"
+    }
+}
+
+theme = "white"
 language = "pt"
