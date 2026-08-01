@@ -8,6 +8,8 @@ from services.database import saveTask
 # if date < today:
 #     print("Essa tarefa está atrasada!")
 
+# Add Id
+
 def addTask(tasks):
     task_title = input(LANGUAGES[language]["addTask"])
 
@@ -33,15 +35,16 @@ def listTasks(tasks):
     # for task in tasks: print(task)
     # for i in range(len(tasks))
     # ☐ ☑
-    if not tasks:
-        print(LANGUAGES[language]["listTasksEmpty"])
-        return
+    # if not tasks:
+    #     print(LANGUAGES[language]["listTasksEmpty"])
+    #     return
     
-    print(LANGUAGES[language]["listTasks"])
+    # print(LANGUAGES[language]["listTasks"])
 
-    for i, task in enumerate(tasks, start = 1):
-        status = "X" if task['completed'] else " "
-        print(f"{i} [{status}] {task['title']}")
+    # for i, task in enumerate(tasks, start = 1):
+    #     status = "X" if task['completed'] else " "
+    #     print(f"{i} [{status}] {task['title']}")
+    return tasks
         
 def removeTask(tasks):
     for i in range(len(tasks)):

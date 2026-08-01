@@ -15,9 +15,6 @@ LANGUAGES = {
         "notifications": "🔔 Notificações",
 
 
-        "menuChoices": "1 - Adicionar Tarefa\n2 - Listar Tarefas\n3 - Remover Tarefa\n4 - Marcar Tarefa como Completa\n5 - Sair",
-        "choice": "Escolha: ",
-        "exit": "Saindo...",
         "addTask": "Qual Tarefa gostaria de adicionar?\n",
         "addTaskDate": "Qual a Data da Tarefa?\n",
         "addTaskDateError": "Insira uma Data Valida!",

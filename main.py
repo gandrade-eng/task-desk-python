@@ -1,41 +1,23 @@
-# import ui.settings
-from config.settings import LANGUAGES, language
-from services.database import loadTasks
-from services.task_manager import addTask, listTasks, removeTask, completeTask
-
-from ui.main_window import main_loop
+# external imports
+from PySide6.QtWidgets import QApplication
+import sys
+# internal imports
+from ui.main_window import MainWindow
 
 def main ():
-    # Loading the File
-    tasks = loadTasks()
 
-    main_loop()
+    # QApplication gerencia a aplicação
+    app = QApplication(sys.argv)
+    # Cria a Janela
+    window = MainWindow()
+    # Cria o loop, experando eventos
+    sys.exit(app.exec())
 
-    while(True):
-        print(LANGUAGES[language]["menu"])
-        print(LANGUAGES[language]["menuChoices"])
-        choice = int(input(LANGUAGES[language]["choice"]))
 
-        match choice:
-            case 1:
-                print()
-                addTask(tasks)
-                print()
-            case 2:
-                print()
-                listTasks(tasks)
-                print()
-            case 3:
-                print()
-                removeTask(tasks)
-                print()
-            case 4:
-                print()
-                completeTask(tasks)
-                print()
-            case 5:
-                print(LANGUAGES[language]["exit"])
-                break
+    #             addTask(tasks)
+    #             listTasks(tasks)
+    #             removeTask(tasks)
+    #             completeTask(tasks)
 
 if __name__ == "__main__":
     main()
