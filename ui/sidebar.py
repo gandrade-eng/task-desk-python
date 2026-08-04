@@ -80,9 +80,9 @@ class customButton(QPushButton):
         self.setStyleSheet(style)
 
 class SideBar(QWidget):
-    home_clicked = Signal()
-    tasks_clicked = Signal()
-    settings_clicked = Signal()
+    home_page_requested = Signal()
+    tasks_page_requested = Signal()
+    settings_page_requested = Signal()
 
     def __init__(self, settings):
         super().__init__()
@@ -90,9 +90,9 @@ class SideBar(QWidget):
         self.settings = settings
         self.create_left_menu()
 
-        self.left_menu_home_button.clicked.connect(self.home_clicked.emit)
-        self.left_menu_tasks_button.clicked.connect(self.tasks_clicked.emit)
-        self.left_menu_settings_button.clicked.connect(self.settings_clicked.emit)
+        self.left_menu_home_button.clicked.connect(self.home_page_requested.emit)
+        self.left_menu_tasks_button.clicked.connect(self.tasks_page_requested.emit)
+        self.left_menu_settings_button.clicked.connect(self.settings_page_requested.emit)
 
     def create_left_menu(self):
         self.left_menu = QFrame()

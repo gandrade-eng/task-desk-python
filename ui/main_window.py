@@ -21,6 +21,10 @@ from config import THEMES, LANGUAGES
 
 from services import TaskManager
 
+from services import Database
+
+from services import HistoryManager
+
 
 # self.pages_text.setStyleSheet("font: 700 9pt 'Segoe UI'")
 # self.pages.setStyleSheet("font-size: 12pt; color: #1F2430")
@@ -49,7 +53,10 @@ class MainWindow(QMainWindow):
         # tasks = loadTasks()
 
         self.settings = load_settings()
-        # self.task_manager = TaskManager()
+
+        self.database = Database()
+        self.history_manager = HistoryManager(Database())
+        self.task_manager = TaskManager(Database(), HistoryManager(Database()))
 
         self.setup_ui()
         # self.apply_settings()
@@ -82,9 +89,9 @@ class MainWindow(QMainWindow):
         # //////////////////////////////////////////////////////////
         self.side_bar = SideBar(self.settings)
 
-        self.side_bar.home_clicked.connect(self.home_clicked)
-        self.side_bar.tasks_clicked.connect(self.tasks_clicked)
-        self.side_bar.settings_clicked.connect(self.settings_clicked)
+        self.side_bar.home_page_requested.connect(self.home_clicked)
+        self.side_bar.tasks_page_requested.connect(self.tasks_clicked)
+        self.side_bar.settings_page_requested.connect(self.settings_clicked)
         
         # Line
         self.line = QFrame()
@@ -96,13 +103,13 @@ class MainWindow(QMainWindow):
 
         # Page Home
         # //////////////////////////////////////////////////////////
-        self.page_home = HomePage(self.settings)
+        self.page_home = HomePage(self.settings, self.task_manager)
 
-        self.page_home.addtask_clicked.connect(self.addtask_clicked)
+        self.page_home.add_task_page_requested.connect(self.addtask_clicked)
 
         # Page Tasks
         # //////////////////////////////////////////////////////////
-        self.page_tasks = TasksPage(self.settings)
+        self.page_tasks = TasksPage(self.settings, self.task_manager)
 
         # Page Settings
         # //////////////////////////////////////////////////////////
@@ -114,6 +121,8 @@ class MainWindow(QMainWindow):
         # Page Add Task
         # //////////////////////////////////////////////////////////
         self.page_addtask = AddTask(self.settings)
+
+        self.page_addtask.task_created.connect(self.handle_task_created)
 
         # Stacked Pages
         self.pages = QStackedWidget()
@@ -186,3 +195,11 @@ class MainWindow(QMainWindow):
         self.settings["theme"] = "light"
         print("light")
         save_settings(self.settings)
+
+    # Clicked Add Task
+    # //////////////////////////////////////////////////////////
+    def handle_task_created(self, title, date, time, description):
+        self.task_manager.add_task(title, date, time, description, False)
+
+        # self.page_tasks.refresh()
+        self.page_home.refresh()

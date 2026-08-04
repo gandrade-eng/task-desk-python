@@ -15,12 +15,6 @@ O PySide6 é uma ótima escolha porque produz interfaces mais profissionais do q
 
 
 ## ANTES DE TUDO
-Data
-Adicionar:
-Prazo:
-12/07/2026
-Não precisa validar a data no começo.
-
 Pesquisa
 Pesquisar: Python
 Resultado:
@@ -33,40 +27,6 @@ prioridade
 ordem alfabética
 concluídas primeiro
 não concluídas primeiro
-
-Estatísticas
-Mostrar:
-Total: 20
-Concluídas: 14
-Pendentes: 6
-70% concluídas
-
-
-
-## Ordem
-Eu seguiria algo como esta ordem:
-
-Refatorar o código
-    Separar em arquivos (main.py, storage.py, tasks.py, settings.py, etc.). (FEITO)
-    Criar funções pequenas e bem definidas.
-    Evitar código repetido.
-
-Adicionar funcionalidades
-    Editar o título de uma tarefa.
-    Desmarcar uma tarefa como concluída.
-    Filtrar (todas, pendentes, concluídas).
-    Pesquisar tarefas por nome.
-    Ordenar tarefas.
-    Confirmar antes de excluir.
-    Validar entradas do usuário.
-
-Melhorar a estrutura
-    Criar um menu mais organizado.
-    Separar lógica de negócio da interface de terminal.
-    Usar tratamento de exceções (try/except).
-
-Só depois disso eu partiria para uma interface gráfica.
-
 
 
 
@@ -105,11 +65,6 @@ Vence hoje às 18:00
 
 
 
-## Tema claro e escuro 
-Guardar a preferência do usuário.
-
-
-
 ## Atalhos
 Ctrl + N
 Nova tarefa
@@ -122,16 +77,6 @@ Excluir
 
 Ctrl + S
 Salvar
-
-
-
-## Estatísticas
-Hoje
-✔ 12 concluídas
-❌ 3 pendentes
-
-Taxa
-80%
 
 
 
