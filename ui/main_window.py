@@ -1,21 +1,25 @@
-from config import THEMES, LANGUAGES
-
+# external imports
 from PySide6.QtCore import QSize
 from PySide6.QtGui import Qt, QIcon
 from PySide6.QtWidgets import (
     QMainWindow, QFrame, QHBoxLayout, 
     QVBoxLayout, QSpacerItem, QSizePolicy, 
     QLabel, QWidget, QStackedWidget, 
-    QApplication, QPushButton, QCheckBox
+    QApplication
 )
 
+# internal imports
 from ui.sidebar import SideBar
 from ui.settings_page import SettingsPage
 from ui.home_page import HomePage
 from ui.tasks_page import TasksPage
 from ui.add_task import AddTask
 
-from config.settings_manager import load_settings, save_settings
+from config import load_settings, save_settings
+
+from config import THEMES, LANGUAGES
+
+from services import TaskManager
 
 
 # self.pages_text.setStyleSheet("font: 700 9pt 'Segoe UI'")
@@ -45,6 +49,8 @@ class MainWindow(QMainWindow):
         # tasks = loadTasks()
 
         self.settings = load_settings()
+        # self.task_manager = TaskManager()
+
         self.setup_ui()
         # self.apply_settings()
         # self.load_task()
@@ -103,6 +109,7 @@ class MainWindow(QMainWindow):
         self.page_settings = SettingsPage(self.settings)
 
         self.page_settings.theme_dark_clicked.connect(self.theme_dark_clicked)
+        self.page_settings.theme_light_clicked.connect(self.theme_light_clicked)
 
         # Page Add Task
         # //////////////////////////////////////////////////////////
@@ -169,11 +176,13 @@ class MainWindow(QMainWindow):
         self.pages.setCurrentWidget(self.page_settings)
 
     def theme_dark_clicked(self):
-        self.settings["theme"] = "black"
+        self.settings["theme"] = "dark"
         print("dark")
         save_settings(self.settings)
         # apply_theme()
         # self.(funcao que vai ativar)(self.side_bar.left_menu_settings_button)
 
     def theme_light_clicked(self):
+        self.settings["theme"] = "light"
         print("light")
+        save_settings(self.settings)

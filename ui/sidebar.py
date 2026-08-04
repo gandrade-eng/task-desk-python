@@ -1,4 +1,3 @@
-
 from config import THEMES, LANGUAGES
 
 from PySide6.QtCore import QSize, Signal

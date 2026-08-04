@@ -12,14 +12,30 @@
 
 import json
 
-def loadTasks():
-    try:
-        with open("data/tasks.json", "r", encoding="utf-8") as file:
-            tasks = json.load(file)
-    except FileNotFoundError:
-        tasks = []
-    return tasks
+from models import Task
 
-def saveTask(tasks):
-    with open("data/tasks.json", "w", encoding="utf-8") as file:
-        json.dump(tasks, file, ensure_ascii=False, indent=4)
+class Database:
+    def __init__(self):
+        self.file_path = "data/tasks.json"
+        
+    def next_id(self):
+        print()
+
+    def load_tasks(self):
+        try:
+            with open(self.file_path, "r", encoding="utf-8") as file:
+                data = json.load(file)
+        except FileNotFoundError:
+            print("Erro ao Abrir o arquivo!")
+            return []
+
+        tasks = []
+
+        for task in data:
+            tasks.append(Task(**task))
+
+        return tasks
+
+    def save_task(self, tasks):
+        with open(self.file_path, "w", encoding="utf-8") as file:
+            json.dump(tasks, file, ensure_ascii=False, indent=4)

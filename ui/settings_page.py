@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
 
 class SettingsPage(QWidget):
     theme_dark_clicked = Signal()
+    theme_light_clicked = Signal()
 
     def __init__(self, settings):
         super().__init__()
@@ -22,6 +23,7 @@ class SettingsPage(QWidget):
         self.create_page_settings()
 
         self.dark_theme_button.clicked.connect(self.theme_dark_clicked.emit)
+        self.light_theme_button.clicked.connect(self.theme_light_clicked.emit)
 
     def create_page_settings(self):
         self.page_settings_layout = QVBoxLayout(self)

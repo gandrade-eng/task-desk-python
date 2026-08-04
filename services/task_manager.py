@@ -1,8 +1,8 @@
 # external imports
 from datetime import datetime
 # internal imports
-from config import LANGUAGES, language
-from services.database import saveTask
+from config import LANGUAGES
+from services import Database
 
 # today = datetime.today()
 # if date < today:
@@ -10,59 +10,32 @@ from services.database import saveTask
 
 # Add Id
 
-def addTask(tasks):
-    task_title = input(LANGUAGES[language]["addTask"])
+class TaskManager:
+    def __init__ (self, tasks):
+        self.tasks = tasks
 
-    while True:
-        try:
-            date_str = input(LANGUAGES[language]["addTaskDate"])
-            due_date = datetime.strptime(date_str, "%d/%m/%Y")
-            break
-        except ValueError:
-            print(LANGUAGES[language]["addTaskDateError"])
+    def add_task(self, newTask):
+        self.tasks.append(newTask)
 
-    newTask = {
-        "title": task_title,
-        "completed": False,
-        "date": due_date.strftime("%d/%m/%Y")
-    }
-    tasks.append(newTask)
+        # try / except ValueError:
+        # date_str = input(LANGUAGES[language]["addTaskDate"])
+        # due_date = datetime.strptime(date_str, "%d/%m/%Y")
 
-    # Saving the file
-    saveTask(tasks)
+        # Saving the file
+        Database.save_task(self.tasks)
+            
+    def remove_task(self, task_id):
+        for i, task in enumerate(self.tasks):
+            if task["id"] == task_id:
+                self.tasks.pop(i)
+                break
 
-def listTasks(tasks):
-    # for task in tasks: print(task)
-    # for i in range(len(tasks))
-    # ☐ ☑
-    # if not tasks:
-    #     print(LANGUAGES[language]["listTasksEmpty"])
-    #     return
-    
-    # print(LANGUAGES[language]["listTasks"])
+        # Saving the file
+        Database.save_task(self.tasks)
 
-    # for i, task in enumerate(tasks, start = 1):
-    #     status = "X" if task['completed'] else " "
-    #     print(f"{i} [{status}] {task['title']}")
-    return tasks
-        
-def removeTask(tasks):
-    for i in range(len(tasks)):
-        print(f"{i+1} - {tasks[i]['title']}")
+    # def edit_task(self, taks):
+    #     print()
 
-    choiceTask = int(input(LANGUAGES[language]["removeTask"]))
-    tasks.pop(choiceTask-1)
-
-    # Saving the file
-    saveTask(tasks)
-
-def completeTask(tasks):
-    for i in range(len(tasks)):
-        if not tasks[i]["completed"]:
-            print(f"{i+1} - {tasks[i]['title']}")
-
-    choiceCompleteTask = int(input(LANGUAGES[language]["completeTask"]))
-    tasks[choiceCompleteTask-1]["completed"] = True
-
-    # Saving the file
-    saveTask(tasks)
+    # def complete_task(tasks):
+    #     # Saving the file
+    #     Database.save_task(tasks)

@@ -1,5 +1,5 @@
 THEMES = {
-    "white": {
+    "light": {
         "left_menu": "background-color: #F3F4F6",
         "left_menu_top_frame": "background-color: #E9ECEF",
         "line": "background-color: #E9ECEF; border: none",
@@ -10,7 +10,7 @@ THEMES = {
         "page_settings_language_title": "font-size: 18px; font-weight: bold; color: black;",
         "title_notification_settings": "font-size: 18px; font-weight: bold; color: black;"
     },
-    "black": {
+    "dark": {
         "left_menu": "background-color: #1E1E1E",
         "left_menu_top_frame": "background-color: #252526",
         "line": "background-color: #333333; border: none",

@@ -11,6 +11,9 @@ from PySide6.QtWidgets import (
     QTimeEdit, QTextEdit
 )
 
+# title = self.title_input.text()
+# task = Task (id = database.next_id(), title = title, ...)
+
 class AddTask(QWidget):
     def __init__(self, settings):
         super().__init__()
