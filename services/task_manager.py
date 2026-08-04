@@ -1,7 +1,7 @@
 # external imports
 from datetime import datetime
 # internal imports
-from config.settings import LANGUAGES, language
+from config import LANGUAGES, language
 from services.database import saveTask
 
 # today = datetime.today()
@@ -49,7 +49,6 @@ def listTasks(tasks):
 def removeTask(tasks):
     for i in range(len(tasks)):
         print(f"{i+1} - {tasks[i]['title']}")
-    print()
 
     choiceTask = int(input(LANGUAGES[language]["removeTask"]))
     tasks.pop(choiceTask-1)

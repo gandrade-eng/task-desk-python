@@ -1,4 +1,4 @@
-from config.settings import THEMES, LANGUAGES
+from config import THEMES, LANGUAGES
 
 from PySide6.QtCore import QSize
 from PySide6.QtGui import Qt, QIcon
@@ -15,7 +15,7 @@ from ui.home_page import HomePage
 from ui.tasks_page import TasksPage
 from ui.add_task import AddTask
 
-from services.settings_manager import loadSettings
+from config.settings_manager import load_settings, save_settings
 
 
 # self.pages_text.setStyleSheet("font: 700 9pt 'Segoe UI'")
@@ -44,7 +44,7 @@ class MainWindow(QMainWindow):
         # Loading the File
         # tasks = loadTasks()
 
-        self.settings = loadSettings()
+        self.settings = load_settings()
         self.setup_ui()
         # self.apply_settings()
         # self.load_task()
@@ -102,6 +102,8 @@ class MainWindow(QMainWindow):
         # //////////////////////////////////////////////////////////
         self.page_settings = SettingsPage(self.settings)
 
+        self.page_settings.theme_dark_clicked.connect(self.theme_dark_clicked)
+
         # Page Add Task
         # //////////////////////////////////////////////////////////
         self.page_addtask = AddTask(self.settings)
@@ -135,6 +137,10 @@ class MainWindow(QMainWindow):
 
     # //////////////////////////////////////////////////////////
     # //////////////////////////////////////////////////////////
+    # def apply_theme(self):
+
+
+
     def set_active_menu(self, active_button):
         buttons = [
             self.side_bar.left_menu_home_button,
@@ -152,16 +158,22 @@ class MainWindow(QMainWindow):
     def tasks_clicked(self):
         self.set_active_menu(self.side_bar.left_menu_tasks_button)
         self.pages.setCurrentWidget(self.page_tasks)
-    
-    def settings_clicked(self):
-        self.set_active_menu(self.side_bar.left_menu_settings_button)
-        self.pages.setCurrentWidget(self.page_settings)
 
     def addtask_clicked(self):
         self.pages.setCurrentWidget(self.page_addtask)
 
+    # Clicked Settings
+    # //////////////////////////////////////////////////////////
+    def settings_clicked(self):
+        self.set_active_menu(self.side_bar.left_menu_settings_button)
+        self.pages.setCurrentWidget(self.page_settings)
+
     def theme_dark_clicked(self):
-        print()
+        self.settings["theme"] = "black"
+        print("dark")
+        save_settings(self.settings)
+        # apply_theme()
+        # self.(funcao que vai ativar)(self.side_bar.left_menu_settings_button)
 
     def theme_light_clicked(self):
-        print()
+        print("light")

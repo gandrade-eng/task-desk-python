@@ -1,5 +1,5 @@
 
-from config.settings import THEMES, LANGUAGES
+from config import THEMES, LANGUAGES
 
 from PySide6.QtCore import QSize, Signal
 from PySide6.QtGui import Qt, QIcon

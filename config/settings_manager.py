@@ -2,7 +2,7 @@
 
 import json
 
-def loadSettings():
+def load_settings():
     try:
         with open("data/settings.json", "r", encoding="utf-8") as file:
             settings = json.load(file)
@@ -10,7 +10,7 @@ def loadSettings():
             settings = []
     return settings
 
-def saveSettings():
-    # with open("data/tasks.json", "w", encoding="utf-8") as file:
-    #     json.dump(tasks, file, ensure_ascii=False, indent=4)
-    print()
+def save_settings(new_settings):
+    with open("data/settings.json", "w", encoding="utf-8") as file:
+        json.dump(new_settings, file, ensure_ascii=False, indent=4)
+    print("save")
