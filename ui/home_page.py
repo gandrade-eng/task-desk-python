@@ -103,15 +103,15 @@ class HomePage(QWidget):
         page_home_button = QCheckBox()
         page_home_button.setStyleSheet(THEMES[self.settings["theme"]]["page_home"])
 
-        # Riscar
-        # font = page_home_text.font()
-        # font.setStrikeOut(True)
-        # page_home_text.setFont(font)
-
         page_home_text = QLabel(
             f"{task.title}\nHora: {task.time.toString('HH:mm')}"
         )
         page_home_text.setStyleSheet("border: none; color: black")
+
+         # Riscar
+        font = page_home_text.font()
+        font.setStrikeOut(True)
+        page_home_text.setFont(font)
 
         page_home_text2 = QLabel(task.date.toString("dd/MM"))
         page_home_text2.setStyleSheet("border: none; color: black")
@@ -190,9 +190,25 @@ class HomePage(QWidget):
     # Refresh
     # //////////////////////////////////////////////////////////
     def refresh(self):
-        # Limpa os cards antigos
-        while self.tasks_layout.count():
-            item = self.tasks_layout.takeAt(0)
+        self.clear_layout(self.today_tasks_layout)
+        self.clear_layout(self.upcoming_tasks_layout)
+
+        self.today_tasks_text.setText(
+            f"🔥 Tarefas de Hoje - {len(self.task_manager.get_today_tasks())}"
+        )
+
+        self.upcoming_tasks_text.setText(
+            f"⏰ Próximas Tarefas - {len(self.task_manager.get_upcoming_tasks(limit=4))}"
+        )
+
+        self.load_tasks()
+
+    def clear_layout(self, layout):
+        while layout.count():
+            item = layout.takeAt(0)
 
             if item.widget():
                 item.widget().deleteLater()
+
+            elif item.layout():
+                self.clear_layout(item.layout())

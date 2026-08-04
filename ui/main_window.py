@@ -203,3 +203,5 @@ class MainWindow(QMainWindow):
 
         # self.page_tasks.refresh()
         self.page_home.refresh()
+
+        self.pages.setCurrentWidget(self.page_home)
