@@ -9,21 +9,12 @@ from PySide6.QtWidgets import (
 )
 
 # internal imports
-from ui.sidebar import SideBar
-from ui.settings_page import SettingsPage
-from ui.home_page import HomePage
-from ui.tasks_page import TasksPage
-from ui.add_task import AddTask
-
-from config import load_settings, save_settings
-
-from config import THEMES, LANGUAGES
-
-from services import TaskManager
-
-from services import Database
-
-from services import HistoryManager
+from ui import (
+    SideBar, SettingsPage, HomePage,
+    TasksPage, AddTask
+)
+from config import THEMES, LANGUAGES, SettingsManager
+from services import TaskManager, Database, HistoryManager
 
 
 # self.pages_text.setStyleSheet("font: 700 9pt 'Segoe UI'")
@@ -52,7 +43,7 @@ class MainWindow(QMainWindow):
         # Loading the File
         # tasks = loadTasks()
 
-        self.settings = load_settings()
+        self.settings = SettingsManager.load_settings()
 
         self.database = Database()
         self.history_manager = HistoryManager(Database())
@@ -153,10 +144,6 @@ class MainWindow(QMainWindow):
 
     # //////////////////////////////////////////////////////////
     # //////////////////////////////////////////////////////////
-    # def apply_theme(self):
-
-
-
     def set_active_menu(self, active_button):
         buttons = [
             self.side_bar.left_menu_home_button,
@@ -187,14 +174,16 @@ class MainWindow(QMainWindow):
     def theme_dark_clicked(self):
         self.settings["theme"] = "dark"
         print("dark")
-        save_settings(self.settings)
-        # apply_theme()
-        # self.(funcao que vai ativar)(self.side_bar.left_menu_settings_button)
+        SettingsManager.save_settings(self.settings)
+
+        self.page_home.apply_theme()
 
     def theme_light_clicked(self):
         self.settings["theme"] = "light"
         print("light")
-        save_settings(self.settings)
+        SettingsManager.save_settings(self.settings)
+
+        self.page_home.apply_theme()
 
     # Clicked Add Task
     # //////////////////////////////////////////////////////////
