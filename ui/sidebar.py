@@ -87,6 +87,9 @@ class SideBar(QWidget):
     def __init__(self, settings):
         super().__init__()
 
+        self.main_layout = QVBoxLayout(self)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+
         self.settings = settings
         self.create_left_menu()
 
@@ -95,20 +98,21 @@ class SideBar(QWidget):
         self.left_menu_settings_button.clicked.connect(self.settings_page_requested.emit)
 
     def create_left_menu(self):
-        self.left_menu = QFrame()
+        self.left_menu = QFrame(self)
+        self.left_menu.setObjectName("left_menu")
         self.left_menu.setMinimumWidth(75)
         self.left_menu.setMaximumWidth(75)
-        self.left_menu.setStyleSheet(THEMES[self.settings["theme"]]["left_menu"])
-
 
         self.left_menu_layout = QVBoxLayout(self.left_menu)
         self.left_menu_layout.setContentsMargins(0, 0, 0, 0)
         self.left_menu_layout.setSpacing(0)
 
+        self.main_layout.addWidget(self.left_menu)
+
 
         self.left_menu_top_frame = QFrame()
+        self.left_menu_top_frame.setObjectName("left_menu_top_frame")
         self.left_menu_top_frame.setMinimumHeight(50)
-        # self.left_menu_top_frame.setStyleSheet(THEMES[self.settings["theme"]]["left_menu_top_frame"])
 
 
         self.left_menu_top_layout = QVBoxLayout(self.left_menu_top_frame)
@@ -121,9 +125,6 @@ class SideBar(QWidget):
 
         self.left_menu_bottom_frame = QFrame()
         self.left_menu_bottom_frame.setMinimumHeight(50)
-        # self.left_menu_bottom_frame.setObjectName("left_menu_bottom_frame")
-        # self.left_menu_bottom_frame.setStyleSheet("#left_menu_bottom_frame { background-color: red; }")
-        # self.left_menu_bottom_frame.setStyleSheet("background-color: red")
         
 
         self.left_menu_bottom_layout = QVBoxLayout(self.left_menu_bottom_frame)
@@ -132,7 +133,7 @@ class SideBar(QWidget):
 
         
         self.left_menu_version_label = QLabel("v1.0.0")
-        self.left_menu_version_label.setStyleSheet("color: #1F2430")
+        self.left_menu_version_label.setObjectName("left_menu_version_label")
         self.left_menu_version_label.setAlignment(Qt.AlignCenter)
         self.left_menu_version_label.setMinimumHeight(30)
         self.left_menu_version_label.setMaximumHeight(30)
@@ -167,6 +168,15 @@ class SideBar(QWidget):
 
 
 
-        self.layout = QVBoxLayout(self)
-        self.layout.setContentsMargins(0, 0, 0, 0)
-        self.layout.addWidget(self.left_menu)
+
+        self.apply_theme()
+
+    # Apply Theme
+    # //////////////////////////////////////////////////////////
+    def apply_theme(self):
+        self.styles = THEMES[self.settings["theme"]]
+
+        self.setStyleSheet(self.styles["side_bar"])
+
+        # Cards
+        # self.refresh()

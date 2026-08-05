@@ -1,10 +1,11 @@
 # external imports
-from PySide6.QtCore import Signal
-from PySide6.QtGui import Qt
+from PySide6.QtCore import Signal, QDate, QSize
+from PySide6.QtGui import Qt, QTextCharFormat, QColor, QIcon
 from PySide6.QtWidgets import (
     QFrame, QHBoxLayout, QVBoxLayout, 
     QLabel, QWidget, QPushButton, QCheckBox,
-    QCalendarWidget
+    QCalendarWidget, QGraphicsDropShadowEffect,
+    QToolButton
 )
 
 # internal imports
@@ -27,7 +28,7 @@ class HomePage(QWidget):
     # //////////////////////////////////////////////////////////
     def create_page_home(self):
         self.page_home_layout = QHBoxLayout(self)
-        self.page_home_layout.setContentsMargins(10,10,10,10)
+        self.page_home_layout.setContentsMargins(25,25,25,25)
 
         # Page Home Main
         self.create_page_home_main()
@@ -148,12 +149,45 @@ class HomePage(QWidget):
 
     def create_page_home_calendar(self):
         self.calendar = QCalendarWidget()
+        self.calendar.setObjectName("calendar")
+        self.calendar.setVerticalHeaderFormat(QCalendarWidget.NoVerticalHeader)
+        self.calendar.setGridVisible(False)
+        self.calendar.setNavigationBarVisible(True)
+        self.calendar.setFixedSize(340, 280)
+
+        # Sabado e Domingo
+        fmt = QTextCharFormat()
+        fmt.setForeground(QColor("#FF7A7A"))
+        self.calendar.setWeekdayTextFormat(Qt.Saturday, fmt)
+        self.calendar.setWeekdayTextFormat(Qt.Sunday, fmt)
+
+        # Destacar Dia de Hoje
+        today = QTextCharFormat()
+        today.setBackground(QColor("pink"))
+        today.setForeground(QColor("white"))
+        self.calendar.setDateTextFormat(QDate.currentDate(), today)
+
 
         self.frame_home_calendar = QFrame()
         self.frame_home_calendar.setObjectName("frame_home_calendar")
 
+        # Sombra no Frame
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(25)
+        shadow.setOffset(0, 4)
+        shadow.setColor(QColor(0, 0, 0, 100))
+        self.frame_home_calendar.setGraphicsEffect(shadow)
+
         frame_home_layout = QVBoxLayout(self.frame_home_calendar)
         frame_home_layout.addWidget(self.calendar)
+
+
+        # Botoes
+        self.prev = self.calendar.findChild(QToolButton, "qt_calendar_prevmonth")
+        self.next = self.calendar.findChild(QToolButton, "qt_calendar_nextmonth")
+
+        self.prev.setIconSize(QSize(18, 18))
+        self.next.setIconSize(QSize(18, 18))
 
     def create_home_statistics(self):
         stats = self.task_manager.get_task_statistics(self.task_manager.get_today_tasks())
@@ -214,6 +248,13 @@ class HomePage(QWidget):
         self.styles = THEMES[self.settings["theme"]]
 
         self.setStyleSheet(self.styles["page_home"])
+
+        if self.settings["theme"] == "dark":
+            self.prev.setIcon(QIcon("icons/chevron_left_white.svg"))
+            self.next.setIcon(QIcon("icons/chevron_right_white.svg"))
+        else:
+            self.prev.setIcon(QIcon("icons/chevron_left_black.svg"))
+            self.next.setIcon(QIcon("icons/chevron_right_black.svg"))
 
         # Cards
         self.refresh()

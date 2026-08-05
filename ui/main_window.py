@@ -86,8 +86,8 @@ class MainWindow(QMainWindow):
         
         # Line
         self.line = QFrame()
+        self.line.setObjectName("line")
         self.line.setFixedWidth(2)
-        self.line.setStyleSheet(THEMES[self.settings["theme"]]["line"])
         
         # Main Menu
         self.create_main_menu()
@@ -130,13 +130,15 @@ class MainWindow(QMainWindow):
 
         # Add in Main Menu
         self.main_menu_layout.addWidget(self.pages)
+
+        self.apply_theme()
     
 
     # Create Main Menu
     # //////////////////////////////////////////////////////////
     def create_main_menu(self):
         self.main_menu = QFrame()
-        self.main_menu.setStyleSheet(THEMES[self.settings["theme"]]["main_menu"])
+        self.main_menu.setObjectName("main_menu")
 
         self.main_menu_layout = QHBoxLayout(self.main_menu)
         self.main_menu_layout.setContentsMargins(0, 0, 0, 0)
@@ -173,17 +175,17 @@ class MainWindow(QMainWindow):
 
     def theme_dark_clicked(self):
         self.settings["theme"] = "dark"
-        print("dark")
+
         SettingsManager.save_settings(self.settings)
 
-        self.page_home.apply_theme()
+        self.apply_theme()
 
     def theme_light_clicked(self):
         self.settings["theme"] = "light"
-        print("light")
+
         SettingsManager.save_settings(self.settings)
 
-        self.page_home.apply_theme()
+        self.apply_theme()
 
     # Clicked Add Task
     # //////////////////////////////////////////////////////////
@@ -194,3 +196,10 @@ class MainWindow(QMainWindow):
         self.page_home.refresh()
 
         self.pages.setCurrentWidget(self.page_home)
+
+    # Apply Theme
+    # //////////////////////////////////////////////////////////
+    def apply_theme(self):
+        self.setStyleSheet(THEMES[self.settings["theme"]]["main_window"])
+        self.page_home.apply_theme()
+        self.page_settings.apply_theme()
