@@ -13,8 +13,9 @@ from PySide6.QtWidgets import (
 # label_page_home.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
 class SettingsPage(QWidget):
-    theme_dark_clicked = Signal()
     theme_light_clicked = Signal()
+    theme_dark_clicked = Signal()
+    theme_pink_clicked = Signal()
 
     def __init__(self, settings):
         super().__init__()
@@ -22,8 +23,9 @@ class SettingsPage(QWidget):
         self.settings = settings
         self.create_page_settings()
 
-        self.dark_theme_button.clicked.connect(self.theme_dark_clicked.emit)
         self.light_theme_button.clicked.connect(self.theme_light_clicked.emit)
+        self.dark_theme_button.clicked.connect(self.theme_dark_clicked.emit)
+        self.pink_theme_button.clicked.connect(self.theme_pink_clicked.emit)
 
     def create_page_settings(self):
         self.page_settings_layout = QVBoxLayout(self)
@@ -68,9 +70,15 @@ class SettingsPage(QWidget):
         self.dark_theme_button.setObjectName("dark_theme_button")
         self.dark_theme_button.setFixedSize(120, 50)
 
+        self.pink_theme_button = QPushButton("🌸 Rosa")
+        self.pink_theme_button.setObjectName("pink_theme_button")
+        self.pink_theme_button.setFixedSize(120, 50)
+
         self.page_settings_all_themes.addWidget(self.light_theme_button)
         self.page_settings_all_themes.setSpacing(10)
         self.page_settings_all_themes.addWidget(self.dark_theme_button)
+        self.page_settings_all_themes.setSpacing(10)
+        self.page_settings_all_themes.addWidget(self.pink_theme_button)
 
         self.page_settings_theme_layout = QVBoxLayout(self.page_settings_theme)
         self.page_settings_theme_layout.setContentsMargins(20, 20, 20, 20)

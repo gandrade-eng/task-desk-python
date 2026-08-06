@@ -19,7 +19,8 @@ PAGE_SETTINGS = """
 
     /* ---------- Theme Buttons ---------- */
     QPushButton#light_theme_button,
-    QPushButton#dark_theme_button {
+    QPushButton#dark_theme_button,
+    QPushButton#pink_theme_button {
         border-radius: 10px;
 
         padding: 8px 14px;
@@ -58,6 +59,21 @@ PAGE_SETTINGS = """
 
     QPushButton#dark_theme_button:pressed {
         background-color: #111827;
+    }
+
+
+    QPushButton#pink_theme_button {
+        background-color: #EC4899;
+        color: white;
+
+        border: 1px solid #EC4899;
+    }
+    QPushButton#pink_theme_button:hover {
+        background-color: #DB2777;
+        border: 1px solid #DB2777;
+    }
+    QPushButton#pink_theme_button:pressed {
+        background-color: #BE185D;
     }
 
     /* ---------- Idiomas ---------- */

@@ -106,8 +106,9 @@ class MainWindow(QMainWindow):
         # //////////////////////////////////////////////////////////
         self.page_settings = SettingsPage(self.settings)
 
-        self.page_settings.theme_dark_clicked.connect(self.theme_dark_clicked)
         self.page_settings.theme_light_clicked.connect(self.theme_light_clicked)
+        self.page_settings.theme_dark_clicked.connect(self.theme_dark_clicked)
+        self.page_settings.theme_pink_clicked.connect(self.theme_pink_clicked)
 
         # Page Add Task
         # //////////////////////////////////////////////////////////
@@ -173,6 +174,13 @@ class MainWindow(QMainWindow):
         self.set_active_menu(self.side_bar.left_menu_settings_button)
         self.pages.setCurrentWidget(self.page_settings)
 
+    def theme_light_clicked(self):
+        self.settings["theme"] = "light"
+
+        SettingsManager.save_settings(self.settings)
+
+        self.apply_theme()
+
     def theme_dark_clicked(self):
         self.settings["theme"] = "dark"
 
@@ -180,9 +188,9 @@ class MainWindow(QMainWindow):
 
         self.apply_theme()
 
-    def theme_light_clicked(self):
-        self.settings["theme"] = "light"
-
+    def theme_pink_clicked(self):
+        self.settings["theme"] = "pink"
+        
         SettingsManager.save_settings(self.settings)
 
         self.apply_theme()
@@ -201,5 +209,7 @@ class MainWindow(QMainWindow):
     # //////////////////////////////////////////////////////////
     def apply_theme(self):
         self.setStyleSheet(THEMES[self.settings["theme"]]["main_window"])
+        self.side_bar.apply_theme()
         self.page_home.apply_theme()
         self.page_settings.apply_theme()
+        self.page_addtask.apply_theme()
