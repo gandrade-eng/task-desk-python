@@ -56,11 +56,14 @@ class HomePage(QWidget):
     # //////////////////////////////////////////////////////////
     def create_page_home_main(self):
         self.page_home_main_layout = QVBoxLayout()
+        self.page_home_main_layout.setAlignment(Qt.AlignTop)
+        self.page_home_main_layout.setSpacing(15)
 
         self.header_text = QLabel("Tarefas")
         self.header_text.setObjectName("header_text")
         self.header_button = QPushButton("➕ Adicionar")
         self.header_button.setObjectName("header_button")
+        self.header_button.setMaximumWidth(160)
 
         self.page_home_main_header_layout = QHBoxLayout()
         self.page_home_main_header_layout.addWidget(self.header_text)
@@ -74,6 +77,7 @@ class HomePage(QWidget):
         self.page_home_main_layout.addWidget(self.today_tasks_text)
 
         self.today_tasks_layout = QVBoxLayout()
+        self.today_tasks_layout.setAlignment(Qt.AlignTop)
         self.page_home_main_layout.addLayout(self.today_tasks_layout)
 
         # MUDAR DPS POR FAVOR
@@ -82,9 +86,10 @@ class HomePage(QWidget):
         self.page_home_main_layout.addWidget(self.upcoming_tasks_text)
 
         self.upcoming_tasks_layout = QVBoxLayout()
+        self.upcoming_tasks_layout.setSpacing(15)
+        self.upcoming_tasks_layout.setAlignment(Qt.AlignTop)
         self.page_home_main_layout.addLayout(self.upcoming_tasks_layout)
 
-        self.page_home_main_layout.addStretch()
 
     # 
     def load_tasks(self):
@@ -102,8 +107,8 @@ class HomePage(QWidget):
     def create_task_card(self, task, layout):
         frame_home = QFrame()
         frame_home.setObjectName("frame_home")
-        frame_home.setMaximumHeight(80)
-        frame_home.setMaximumWidth(300)
+        frame_home.setMinimumSize(280, 60)
+        frame_home.setMaximumSize(500, 80)
 
         frame_home_layout = QHBoxLayout(frame_home)
 
@@ -134,8 +139,9 @@ class HomePage(QWidget):
     # //////////////////////////////////////////////////////////
     def create_page_home_side(self):
         self.page_home_side = QFrame()
+        self.page_home_side.setMinimumWidth(300)
+        self.page_home_side.setMaximumWidth(360)
         self.page_home_side.setObjectName("page_home_side")
-        self.page_home_side_layout = QVBoxLayout(self.page_home_side)
 
         # Page Home Calendar
         self.create_page_home_calendar()
@@ -143,9 +149,12 @@ class HomePage(QWidget):
         # Page Home Statistics / Day's Summary
         self.create_home_statistics()
 
+        self.page_home_side_layout = QVBoxLayout(self.page_home_side)
+        self.page_home_side_layout.setSpacing(15)
+        self.page_home_side_layout.setAlignment(Qt.AlignTop)
         self.page_home_side_layout.addWidget(self.frame_home_calendar)
         self.page_home_side_layout.addWidget(self.frame_home_statistics)
-        self.page_home_side_layout.addStretch()
+        # self.page_home_side_layout.addStretch()
 
     def create_page_home_calendar(self):
         self.calendar = QCalendarWidget()
@@ -153,7 +162,8 @@ class HomePage(QWidget):
         self.calendar.setVerticalHeaderFormat(QCalendarWidget.NoVerticalHeader)
         self.calendar.setGridVisible(False)
         self.calendar.setNavigationBarVisible(True)
-        self.calendar.setFixedSize(340, 280)
+        self.calendar.setMinimumSize(260, 240)
+        self.calendar.setMaximumSize(360, 260)
 
         # Sabado e Domingo
         fmt = QTextCharFormat()
@@ -170,6 +180,8 @@ class HomePage(QWidget):
 
         self.frame_home_calendar = QFrame()
         self.frame_home_calendar.setObjectName("frame_home_calendar")
+        self.frame_home_calendar.setMinimumSize(280, 220)
+        self.frame_home_calendar.setMaximumSize(380, 280)
 
         # Sombra no Frame
         shadow = QGraphicsDropShadowEffect()
@@ -194,6 +206,8 @@ class HomePage(QWidget):
 
         self.frame_home_statistics = QFrame()
         self.frame_home_statistics.setObjectName("frame_home_statistics")
+        self.frame_home_statistics.setMinimumSize(280, 120)
+        self.frame_home_statistics.setMaximumSize(380, 180)
         frame_home_layout = QVBoxLayout(self.frame_home_statistics)
 
         self.page_home_statistics_text = QLabel(f"📊 Estatisticas do Dia")

@@ -14,6 +14,33 @@ O PySide6 é uma ótima escolha porque produz interfaces mais profissionais do q
 
 
 
+Home
+ calendário
+ próximas tarefas
+ estatísticas
+ clicar numa tarefa abre detalhes (opcional)
+
+Tasks
+ mostrar todas as tasks
+ checkbox concluída
+ remover
+ editar
+ filtros
+
+Settings
+ tema
+ idioma
+ salvar configurações automaticamente
+ aplicar mudanças sem reiniciar
+
+Add Task
+ formulário
+ validar campos
+ salvar task
+ voltar para página anterior
+
+
+
 ## ANTES DE TUDO
 Pesquisa
 Pesquisar: Python

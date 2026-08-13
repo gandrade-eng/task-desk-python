@@ -57,7 +57,6 @@ class customButton(QPushButton):
         QPushButton {{
             background-color: {self.btn_color};
             border: none;
-            border-radius: 10px;
         }}
 
         QPushButton:hover {{
@@ -74,6 +73,7 @@ class customButton(QPushButton):
             QPushButton {
                 background-color: #D1D5DB;
                 border: 1px solid #C7CCD4;
+                border-left: 5px solid black;
             }
             """
 
@@ -116,7 +116,7 @@ class SideBar(QWidget):
 
 
         self.left_menu_top_layout = QVBoxLayout(self.left_menu_top_frame)
-        self.left_menu_top_layout.setContentsMargins(5, 5, 5, 5)
+        self.left_menu_top_layout.setContentsMargins(0, 0, 0, 0)
         self.left_menu_top_layout.setSpacing(10)
 
 
@@ -128,7 +128,7 @@ class SideBar(QWidget):
         
 
         self.left_menu_bottom_layout = QVBoxLayout(self.left_menu_bottom_frame)
-        self.left_menu_bottom_layout.setContentsMargins(5, 5, 5, 5)
+        self.left_menu_bottom_layout.setContentsMargins(0, 0, 0, 0)
         self.left_menu_bottom_layout.setSpacing(0)
 
         
