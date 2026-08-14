@@ -11,11 +11,12 @@ from PySide6.QtWidgets import (
 )
 
 class TasksPage(QWidget):
-    def __init__(self, settings, task_manager):
+    def __init__(self, settings, task_manager, history_manager):
         super().__init__()
 
         self.settings = settings
         self.task_manager = task_manager
+        self.history_manager = history_manager
 
         self.create_page_tasks()
 
@@ -65,7 +66,7 @@ class TasksPage(QWidget):
         # Taxa de conclusão
         # ████████░░ 82%
         # 82% das tarefas criadas foram concluídas
-        stats = self.task_manager.get_task_statistics(self.task_manager.get_tasks())
+        stats = self.history_manager.get_task_completion_percentage(self.history_manager.get_tasks())
 
         self.overall_progress = QVBoxLayout()
 
@@ -83,9 +84,7 @@ class TasksPage(QWidget):
         completion_bar = QProgressBar()
         completion_bar.setMinimum(0)
         completion_bar.setMaximum(100)
-        completion_bar.setValue(
-            self.task_manager.get_task_completion_percentage(self.task_manager.get_tasks())
-        )
+        completion_bar.setValue(stats)
         completion_bar.setTextVisible(True)
         completion_bar.setFormat("%p%")
         completion_bar.setStyleSheet(THEMES[self.settings["theme"]]["tasks_page"])
@@ -106,7 +105,38 @@ class TasksPage(QWidget):
 
         # history
 
-        self.history_statistics = QVBoxLayout()
+        self.history_statistics = QHBoxLayout()
+
+        self.history_statistics_left = QVBoxLayout()
+        self.history_statistics_right = QVBoxLayout()
+
+        months = [
+            "january",
+            "february",
+            "march",
+            "april",
+            "may",
+            "june",
+            "july",
+            "august",
+            "september",
+            "october",
+            "november",
+            "december"
+        ]
+
+        for i, month in enumerate(months):
+            month_label = QLabel(month)
+            month_label.setMinimumSize(150, 50)
+            month_label.setStyleSheet("color: black; border-radius: 5px; border: 1px solid black;")
+
+            if i < 6:
+                self.history_statistics_left.addWidget(month_label)
+            else:
+                self.history_statistics_right.addWidget(month_label)
+
+        self.history_statistics.addLayout(self.history_statistics_left)
+        self.history_statistics.addLayout(self.history_statistics_right)
 
     def create_general_status(self):
         # Total

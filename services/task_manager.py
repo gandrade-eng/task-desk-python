@@ -48,7 +48,6 @@ class TaskManager:
 
         return upcoming_tasks
 
-
     def get_task_statistics(self, tasks):
         total = len(tasks)
 
@@ -61,14 +60,6 @@ class TaskManager:
             "completed": completed,
             "incomplete": incomplete
         }
-
-    def get_task_completion_percentage(self, tasks):
-        stats = self.get_task_statistics(tasks)
-
-        if stats["total"] == 0:
-            return 0
-
-        return int((stats["completed"] / stats["total"]) * 100)
 
     # IMCOMPLETE
     def get_tasks_created_by_month(self):
@@ -86,19 +77,13 @@ class TaskManager:
             "november": 1,
             "december": 3
         }
-
-    # Helpers
-    # //////////////////////////////////////////////////////////
-    def next_id(self):
-        if not self.tasks:
-            return 1
-        return max(task.id for task in self.tasks) + 1
+    
 
     # Actions
     # //////////////////////////////////////////////////////////
     def add_task(self, title, date, time, description, completed):
         new_task = Task(
-            id = self.next_id(),
+            id = self.history_manager.next_id(),
             title = title,
             date = date,
             time = time,

@@ -100,7 +100,7 @@ class MainWindow(QMainWindow):
 
         # Page Tasks
         # //////////////////////////////////////////////////////////
-        self.page_tasks = TasksPage(self.settings, self.task_manager)
+        self.page_tasks = TasksPage(self.settings, self.task_manager, self.history_manager)
 
         # Page Settings
         # //////////////////////////////////////////////////////////

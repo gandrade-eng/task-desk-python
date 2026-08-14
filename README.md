@@ -6,8 +6,7 @@ Eu faria em Python usando:
 PySide6 (interface gráfica moderna baseada em Qt)
 json (armazenamento inicial)
 pathlib (manipulação de arquivos)
-winshell ou winreg (inicialização com o Windows)
-plyer ou winotify (notificações)
+plyer(notificações)
 PyInstaller (gerar um .exe)
 
 O PySide6 é uma ótima escolha porque produz interfaces mais profissionais do que Tkinter e é bastante usado em aplicações desktop.
