@@ -1,5 +1,8 @@
 # task-desk-python
 
+VER OQ VAI FAZER SOBRE A LISTA NA PAGINA DE TAREFAS
+SE FOR EXCLUIR, NAO PODE MOSTRAR AS QUE ESTAO EXCLUIDAS
+
 ## Tecnologias
 Eu faria em Python usando:
 

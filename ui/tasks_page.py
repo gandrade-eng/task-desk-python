@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
     QLabel, QWidget, QStackedWidget, 
     QApplication, QPushButton, QCheckBox,
     QProgressBar, QLineEdit, QComboBox,
-    QScrollArea
+    QScrollArea, QMenu, QMessageBox
 )
 
 class TasksPage(QWidget):
@@ -33,9 +33,9 @@ class TasksPage(QWidget):
         self.page_tasks.addWidget(self.page_tasks_list)
         self.page_tasks.addWidget(self.page_tasks_statistics)
 
-        self.load_tasks()
-
         self.apply_theme()
+
+        self.refresh()
 
     # Tasks List
     # //////////////////////////////////////////////////////////
@@ -135,6 +135,8 @@ class TasksPage(QWidget):
 
     # Task Card
     def create_task_card(self, task):
+        task_id = task.id
+
         frame_task = QFrame()
         frame_task.setObjectName("frame_task")
         frame_task.setMinimumSize(280, 60)
@@ -157,9 +159,35 @@ class TasksPage(QWidget):
         page_task_text2.setObjectName("page_task_text2")
         page_task_text2.setStyleSheet("color: black")
 
+        options_button = QPushButton("⋮")
+        options_button.setFixedSize(35, 35)
+        options_button.setStyleSheet("""
+            QPushButton {
+                border: none;
+                color: #6B7280;
+                font-size: 22px;
+                background-color: transparent;
+                border-radius: 6px;
+            }
+
+            QPushButton:hover {
+                background-color: #F3F4F6;
+                color: #111827;
+            }
+
+            QPushButton:pressed {
+                background-color: #E5E7EB;
+            }
+        """)
+
+        options_button.clicked.connect(
+            lambda: self.show_task_options(task_id, options_button)
+        )
+
         frame_task_layout.addWidget(page_task_text)
         frame_task_layout.addStretch()
         frame_task_layout.addWidget(page_task_text2)
+        frame_task_layout.addWidget(options_button)
 
         self.list_container_layout.addWidget(frame_task)
 
@@ -313,6 +341,83 @@ class TasksPage(QWidget):
         self.general_status_layout.addWidget(self.general_status_nTasks)
         self.general_status_layout.addWidget(self.general_status_completed)
         self.general_status_layout.addWidget(self.general_status_incomplete)
+
+    # Refresh
+    # //////////////////////////////////////////////////////////
+    def refresh(self):
+        self.clear_layout(self.list_container_layout)
+
+        self.load_tasks()
+
+    def clear_layout(self, layout):
+        while layout.count():
+            item = layout.takeAt(0)
+
+            if item.widget():
+                item.widget().deleteLater()
+
+            elif item.layout():
+                self.clear_layout(item.layout())
+
+    # Clicked
+    # //////////////////////////////////////////////////////////
+    def show_task_options(self, task_id, options_button):
+        menu = QMenu(self)
+        menu.setStyleSheet("""
+            QMenu {
+                background-color: white;
+                border: 2px solid #E5E7EB;
+                border-radius: 8px;
+                padding: 6px;
+            }
+
+            QMenu::item {
+                background-color: transparent;
+                color: #374151;
+                padding: 8px 20px 8px 12px;
+                border-radius: 6px;
+                font-size: 14px;
+            }
+
+            QMenu::item:selected {
+                background-color: #F3F4F6;
+                color: #111827;
+            }
+
+            QMenu::separator {
+                height: 1px;
+                background-color: #E5E7EB;
+                margin: 5px 8px;
+            }
+        """)
+
+        edit_action = menu.addAction("✏️  Editar")
+        # self.edit_task.connect(self.open_edit_task)
+
+        details_action = menu.addAction("ℹ️  Detalhes")
+
+        delete_action = menu.addAction("🗑️  Excluir")
+        delete_action.triggered.connect(
+            lambda: self.confirm_delete_task(task_id)
+        )
+
+        pos = options_button.mapToGlobal(
+            options_button.rect().bottomLeft()
+        )
+
+        menu.exec(pos)
+
+    def confirm_delete_task(self, task_id):
+        reply = QMessageBox.question(
+            self,
+            "Excluir tarefa",
+            "Tem certeza que deseja excluir esta tarefa?",
+            QMessageBox.Yes | QMessageBox.No
+        )
+
+        if reply == QMessageBox.Yes:
+            self.task_manager.remove_task(task_id)
+            self.refresh()
 
     # Apply Theme
     # //////////////////////////////////////////////////////////

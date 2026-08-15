@@ -5,7 +5,7 @@ from PySide6.QtWidgets import (
     QFrame, QHBoxLayout, QVBoxLayout, 
     QLabel, QWidget, QPushButton, QCheckBox,
     QCalendarWidget, QGraphicsDropShadowEffect,
-    QToolButton
+    QToolButton, QMenu, QMessageBox
 )
 
 # internal imports
@@ -13,16 +13,18 @@ from config import THEMES, LANGUAGES
 
 class HomePage(QWidget):
     add_task_page_requested = Signal()
+    task_options = Signal(int, QPushButton)
+    edit_task_requested = Signal(int)
 
     def __init__(self, settings, task_manager):
         super().__init__()
+
+        self.task_options.connect(self.show_task_options)
 
         self.settings = settings
         self.task_manager = task_manager
 
         self.create_page_home()
-
-        self.header_button.clicked.connect(self.add_task_page_requested.emit)
 
     # Page Home
     # //////////////////////////////////////////////////////////
@@ -64,6 +66,7 @@ class HomePage(QWidget):
         self.header_button = QPushButton("➕ Adicionar")
         self.header_button.setObjectName("header_button")
         self.header_button.setMaximumWidth(160)
+        self.header_button.clicked.connect(self.add_task_page_requested.emit)
 
         self.page_home_main_header_layout = QHBoxLayout()
         self.page_home_main_header_layout.addWidget(self.header_text)
@@ -104,19 +107,16 @@ class HomePage(QWidget):
 
     # Task Card
     def create_task_card(self, task, layout):
+        task_id = task.id
         frame_home = QFrame()
         frame_home.setObjectName("frame_home")
         frame_home.setMinimumSize(280, 60)
         frame_home.setMaximumSize(500, 80)
 
-        frame_home_layout = QHBoxLayout(frame_home)
-
         page_home_button = QCheckBox()
         page_home_button.setObjectName("page_home_button")
 
-        page_home_text = QLabel(
-            f"{task.title}\nHora: {task.time.toString('HH:mm')}"
-        )
+        page_home_text = QLabel(f"{task.title}\nHora: {task.time.toString('HH:mm')}")
         page_home_text.setObjectName("page_home_text")
 
         # Riscar
@@ -127,10 +127,37 @@ class HomePage(QWidget):
         page_home_text2 = QLabel(task.date.toString("dd/MM"))
         page_home_text2.setObjectName("page_home_text2")
 
+        options_button = QPushButton("⋮")
+        options_button.setFixedSize(35, 35)
+        options_button.setStyleSheet("""
+            QPushButton {
+                border: none;
+                color: #6B7280;
+                font-size: 22px;
+                background-color: transparent;
+                border-radius: 6px;
+            }
+
+            QPushButton:hover {
+                background-color: #F3F4F6;
+                color: #111827;
+            }
+
+            QPushButton:pressed {
+                background-color: #E5E7EB;
+            }
+        """)
+
+        options_button.clicked.connect(
+            lambda: self.show_task_options(task_id, options_button)
+        )
+
+        frame_home_layout = QHBoxLayout(frame_home)
         frame_home_layout.addWidget(page_home_button)
         frame_home_layout.addWidget(page_home_text)
         frame_home_layout.addStretch()
         frame_home_layout.addWidget(page_home_text2)
+        frame_home_layout.addWidget(options_button)
 
         layout.addWidget(frame_home)
 
@@ -155,6 +182,7 @@ class HomePage(QWidget):
         self.page_home_side_layout.addWidget(self.frame_home_statistics)
         # self.page_home_side_layout.addStretch()
 
+    # Calendar
     def create_page_home_calendar(self):
         self.calendar = QCalendarWidget()
         self.calendar.setObjectName("calendar")
@@ -200,6 +228,7 @@ class HomePage(QWidget):
         self.prev.setIconSize(QSize(18, 18))
         self.next.setIconSize(QSize(18, 18))
 
+    # Statistics
     def create_home_statistics(self):
         stats = self.task_manager.get_task_statistics(self.task_manager.get_today_tasks())
 
@@ -254,6 +283,65 @@ class HomePage(QWidget):
 
             elif item.layout():
                 self.clear_layout(item.layout())
+
+    # Clicked Options Button
+    # //////////////////////////////////////////////////////////
+    def show_task_options(self, task_id, options_button):
+        menu = QMenu(self)
+        menu.setStyleSheet("""
+            QMenu {
+                background-color: white;
+                border: 2px solid #E5E7EB;
+                border-radius: 8px;
+                padding: 6px;
+            }
+
+            QMenu::item {
+                background-color: transparent;
+                color: #374151;
+                padding: 8px 20px 8px 12px;
+                border-radius: 6px;
+                font-size: 14px;
+            }
+
+            QMenu::item:selected {
+                background-color: #F3F4F6;
+                color: #111827;
+            }
+
+            QMenu::separator {
+                height: 1px;
+                background-color: #E5E7EB;
+                margin: 5px 8px;
+            }
+        """)
+
+        edit_action = menu.addAction("✏️  Editar")
+        # self.edit_task.connect(self.open_edit_task)
+
+        delete_action = menu.addAction("🗑️  Excluir")
+        delete_action.triggered.connect(
+            lambda: self.confirm_delete_task(task_id)
+        )
+
+        pos = options_button.mapToGlobal(
+            options_button.rect().bottomLeft()
+        )
+
+        menu.exec(pos)
+
+    # Clicked Delete Task
+    def confirm_delete_task(self, task_id):
+        reply = QMessageBox.question(
+            self,
+            "Excluir tarefa",
+            "Tem certeza que deseja excluir esta tarefa?",
+            QMessageBox.Yes | QMessageBox.No
+        )
+
+        if reply == QMessageBox.Yes:
+            self.task_manager.remove_task(task_id)
+            self.refresh()
 
     # Apply Theme
     # //////////////////////////////////////////////////////////
