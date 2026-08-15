@@ -1,7 +1,8 @@
 PAGE_SETTINGS = """
     #page_settings_theme,
     #page_settings_language,
-    #page_settings_notifications {
+    #page_settings_notifications,
+    #settings_data {
         background-color: #FFFFFF;
 
         border: 1px solid #E5E7EB;
@@ -10,7 +11,8 @@ PAGE_SETTINGS = """
 
     #page_settings_theme_title,
     #language_title,
-    #notifications_title {
+    #notifications_title,
+    #data_title {
         color: #111827;
 
         font-size: 18px;

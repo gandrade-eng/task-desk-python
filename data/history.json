@@ -13,7 +13,7 @@
         "description": "12312321",
         "date": "2244-01-01",
         "time": "23:00",
-        "completed": false
+        "completed": true
     },
     {
         "id": 6,

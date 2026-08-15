@@ -17,15 +17,14 @@ class SettingsPage(QWidget):
     theme_dark_clicked = Signal()
     theme_pink_clicked = Signal()
 
+    data_export_clicked = Signal()
+    data_import_clicked = Signal()
+
     def __init__(self, settings):
         super().__init__()
 
         self.settings = settings
         self.create_page_settings()
-
-        self.light_theme_button.clicked.connect(self.theme_light_clicked.emit)
-        self.dark_theme_button.clicked.connect(self.theme_dark_clicked.emit)
-        self.pink_theme_button.clicked.connect(self.theme_pink_clicked.emit)
 
     def create_page_settings(self):
         self.page_settings_layout = QVBoxLayout(self)
@@ -41,20 +40,19 @@ class SettingsPage(QWidget):
         self.create_settings_notification()
 
         # Page Settings Data
-        # [Exportar tarefas] 
-        # [Importar tarefas]
         self.create_settings_data()
 
         # Add in Layout
         self.page_settings_layout.addWidget(self.page_settings_theme)
         self.page_settings_layout.addWidget(self.page_settings_language)
         self.page_settings_layout.addWidget(self.page_settings_notifications)
+        self.page_settings_layout.addWidget(self.settings_data)
 
         self.apply_theme()
 
     # //////////////////////////////////////////////////////////
     def create_settings_theme(self):
-        self.page_settings_theme = QLabel()
+        self.page_settings_theme = QFrame()
         self.page_settings_theme.setObjectName("page_settings_theme")
 
         self.page_settings_theme_title = QLabel(LANGUAGES[self.settings["language"]]["theme"])
@@ -65,14 +63,17 @@ class SettingsPage(QWidget):
         self.light_theme_button = QPushButton("☀ Claro")
         self.light_theme_button.setObjectName("light_theme_button")
         self.light_theme_button.setFixedSize(120, 50)
+        self.light_theme_button.clicked.connect(self.theme_light_clicked.emit)
 
         self.dark_theme_button = QPushButton("🌙 Escuro")
         self.dark_theme_button.setObjectName("dark_theme_button")
         self.dark_theme_button.setFixedSize(120, 50)
+        self.dark_theme_button.clicked.connect(self.theme_dark_clicked.emit)
 
         self.pink_theme_button = QPushButton("🌸 Rosa")
         self.pink_theme_button.setObjectName("pink_theme_button")
         self.pink_theme_button.setFixedSize(120, 50)
+        self.pink_theme_button.clicked.connect(self.theme_pink_clicked.emit)
 
         self.page_settings_all_themes.addWidget(self.light_theme_button)
         self.page_settings_all_themes.setSpacing(10)
@@ -88,7 +89,7 @@ class SettingsPage(QWidget):
 
     # //////////////////////////////////////////////////////////
     def create_settings_language(self):
-        self.page_settings_language = QLabel()
+        self.page_settings_language = QFrame()
         self.page_settings_language.setObjectName("page_settings_language")
 
         self.language_title = QLabel(LANGUAGES[self.settings["language"]]["language"])
@@ -124,7 +125,7 @@ class SettingsPage(QWidget):
 
     # //////////////////////////////////////////////////////////
     def create_settings_notification(self):
-        self.page_settings_notifications = QLabel()
+        self.page_settings_notifications = QFrame()
         self.page_settings_notifications.setObjectName("page_settings_notifications")
         
         self.notifications_title = QLabel(LANGUAGES[self.settings["language"]]["notifications"])
@@ -141,7 +142,33 @@ class SettingsPage(QWidget):
 
     # //////////////////////////////////////////////////////////
     def create_settings_data(self):
-        print("create")
+        # [Exportar tarefas] 
+        # [Importar tarefas]
+        self.settings_data = QFrame()
+        self.settings_data.setObjectName("settings_data")
+
+        self.data_title = QLabel("💾 Dados")
+        self.data_title.setObjectName("data_title")
+
+        self.data_button_export = QPushButton("Exportar Tarefas")
+        self.data_button_export.setObjectName("data_button_export")
+        self.data_button_export.setFixedSize(120, 50)
+        self.data_button_export.clicked.connect(self.data_export_clicked.emit)
+
+        self.data_button_import = QPushButton("Importar Tarefas")
+        self.data_button_import.setObjectName("data_button_import")
+        self.data_button_import.setFixedSize(120, 50)
+        self.data_button_import.clicked.connect(self.data_import_clicked.emit)
+
+        self.data_layout = QHBoxLayout()
+        self.data_layout.addWidget(self.data_button_export)
+        self.data_layout.addWidget(self.data_button_import)
+
+        self.settings_data_layout = QVBoxLayout(self.settings_data)
+        self.settings_data_layout.setContentsMargins(20, 20, 20, 20)
+        self.settings_data_layout.addWidget(self.data_title)
+        self.settings_data_layout.addStretch()
+        self.settings_data_layout.addLayout(self.data_layout)
 
     # Apply Theme
     # //////////////////////////////////////////////////////////

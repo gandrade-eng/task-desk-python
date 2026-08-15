@@ -90,8 +90,7 @@ class HomePage(QWidget):
         self.upcoming_tasks_layout.setAlignment(Qt.AlignTop)
         self.page_home_main_layout.addLayout(self.upcoming_tasks_layout)
 
-
-    # 
+    # Load Tasks
     def load_tasks(self):
         today_tasks = self.task_manager.get_today_tasks()
 
@@ -103,7 +102,7 @@ class HomePage(QWidget):
         for task in upcoming_tasks:
             self.create_task_card(task, self.upcoming_tasks_layout)
 
-    # 
+    # Task Card
     def create_task_card(self, task, layout):
         frame_home = QFrame()
         frame_home.setObjectName("frame_home")
