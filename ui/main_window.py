@@ -1,11 +1,9 @@
 # external imports
-from PySide6.QtCore import QSize
-from PySide6.QtGui import Qt, QIcon
+# from PySide6.QtCore import QSize
+# from PySide6.QtGui import Qt, QIcon
 from PySide6.QtWidgets import (
     QMainWindow, QFrame, QHBoxLayout, 
-    QVBoxLayout, QSpacerItem, QSizePolicy, 
-    QLabel, QWidget, QStackedWidget, 
-    QApplication
+    QStackedWidget, 
 )
 
 # internal imports
@@ -16,24 +14,9 @@ from ui import (
 from config import THEMES, LANGUAGES, SettingsManager
 from services import TaskManager, Database, HistoryManager
 
-
 # self.pages_text.setStyleSheet("font: 700 9pt 'Segoe UI'")
 # self.pages.setStyleSheet("font-size: 12pt; color: #1F2430")
 # self.top_spacer = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-
-# Fundo principal	Branco	#FFFFFF
-# Fundo secundário	Cinza muito claro	#F7F8FA
-# Barra lateral	Cinza claro	#F3F4F6
-# Cards	Branco	#FFFFFF
-# Hover	Cinza	#E9ECEF
-# Borda	Cinza claro	#DCDFE4
-
-# Principal	#1F2937
-# Secundário	#6B7280
-# Desabilitado	#9CA3AF
-
-# border-left: 5px solid #44475a;
 
 # Primary Window
 class MainWindow(QMainWindow):
@@ -94,13 +77,15 @@ class MainWindow(QMainWindow):
 
         # Page Home
         # //////////////////////////////////////////////////////////
-        self.page_home = HomePage(self.settings, self.task_manager)
+        self.page_home = HomePage(self.settings, self.task_manager, self.history_manager)
 
         self.page_home.add_task_page_requested.connect(self.addtask_clicked)
 
         # Page Tasks
         # //////////////////////////////////////////////////////////
         self.page_tasks = TasksPage(self.settings, self.task_manager, self.history_manager)
+
+        self.page_tasks.add_task_page_requested.connect(self.addtask_clicked)
 
         # Page Settings
         # //////////////////////////////////////////////////////////
@@ -198,12 +183,19 @@ class MainWindow(QMainWindow):
     # Clicked Add Task
     # //////////////////////////////////////////////////////////
     def handle_task_created(self, title, date, time, description):
-        self.task_manager.add_task(title, date, time, description, False)
+        new_task = self.task_manager.add_task(title, date, time, description, False)
+
+        self.history_manager.add_history(new_task)
 
         # self.page_tasks.refresh()
         self.page_home.refresh()
 
         self.pages.setCurrentWidget(self.page_home)
+
+    # //////////////////////////////////////////////////////////
+    def cancel_task_created():
+        ...
+        # self.pages.setCurrentWidget(self.page_home)
 
     # Apply Theme
     # //////////////////////////////////////////////////////////

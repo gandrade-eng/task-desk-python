@@ -5,7 +5,7 @@ from PySide6.QtWidgets import (
     QFrame, QHBoxLayout, QVBoxLayout, 
     QLabel, QWidget, QPushButton, QCheckBox,
     QCalendarWidget, QGraphicsDropShadowEffect,
-    QToolButton, QMenu, QMessageBox
+    QToolButton, QMenu, QMessageBox, QScrollArea
 )
 
 # internal imports
@@ -16,13 +16,14 @@ class HomePage(QWidget):
     task_options = Signal(int, QPushButton)
     edit_task_requested = Signal(int)
 
-    def __init__(self, settings, task_manager):
+    def __init__(self, settings, task_manager, history_manager):
         super().__init__()
 
         self.task_options.connect(self.show_task_options)
 
         self.settings = settings
         self.task_manager = task_manager
+        self.history_manager = history_manager
 
         self.create_page_home()
 
@@ -79,9 +80,53 @@ class HomePage(QWidget):
         self.today_tasks_text.setObjectName("today_tasks_text")
         self.page_home_main_layout.addWidget(self.today_tasks_text)
 
-        self.today_tasks_layout = QVBoxLayout()
+        self.today_tasks_container = QWidget()
+        self.today_tasks_layout = QVBoxLayout(self.today_tasks_container)
         self.today_tasks_layout.setAlignment(Qt.AlignTop)
-        self.page_home_main_layout.addLayout(self.today_tasks_layout)
+
+        self.today_tasks_scroll = QScrollArea()
+        self.today_tasks_scroll.setStyleSheet("""
+            QScrollArea {
+                background: transparent;
+                border: none;
+            }
+
+            QScrollArea > QWidget > QWidget {
+                background: transparent;
+            }
+
+            QScrollBar:vertical {
+                background: #F3F4F6;
+                width: 8px;
+                margin: 2px 2px 2px 2px;
+                border-radius: 4px;
+            }
+
+            QScrollBar::handle:vertical {
+                background: #C9CDD2;
+                min-height: 30px;
+                border-radius: 4px;
+            }
+
+            QScrollBar::handle:vertical:hover {
+                background: #AEB4BB;
+            }
+
+            QScrollBar::add-line:vertical,
+            QScrollBar::sub-line:vertical {
+                height: 0px;
+            }
+
+            QScrollBar::add-page:vertical,
+            QScrollBar::sub-page:vertical {
+                background: transparent;
+            }
+        """)
+        self.today_tasks_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.today_tasks_scroll.setWidgetResizable(True)
+        self.today_tasks_scroll.setWidget(self.today_tasks_container)
+
+        self.page_home_main_layout.addWidget(self.today_tasks_scroll)
 
         # MUDAR DPS POR FAVOR
         self.upcoming_tasks_text = QLabel(f"⏰ Proximas Tarefas - {len(self.task_manager.get_upcoming_tasks(None))}")
@@ -113,16 +158,23 @@ class HomePage(QWidget):
         frame_home.setMinimumSize(280, 60)
         frame_home.setMaximumSize(500, 80)
 
-        page_home_button = QCheckBox()
-        page_home_button.setObjectName("page_home_button")
-
         page_home_text = QLabel(f"{task.title}\nHora: {task.time.toString('HH:mm')}")
         page_home_text.setObjectName("page_home_text")
 
+        if task.is_completed:
+            page_home_text.setStyleSheet(
+                "text-decoration: line-through;"
+            )
+
+        page_home_button = QCheckBox()
+        page_home_button.setObjectName("page_home_button")
+        page_home_button.setChecked(task.is_completed)
+        page_home_button.toggled.connect(
+            lambda checked, t=task, label=page_home_text:
+                self.update_task(t, checked, label)
+        )
+
         # Riscar
-        font = page_home_text.font()
-        font.setStrikeOut(True)
-        page_home_text.setFont(font)
 
         page_home_text2 = QLabel(task.date.toString("dd/MM"))
         page_home_text2.setObjectName("page_home_text2")
@@ -230,37 +282,18 @@ class HomePage(QWidget):
 
     # Statistics
     def create_home_statistics(self):
-        stats = self.task_manager.get_task_statistics(self.task_manager.get_today_tasks())
-
         self.frame_home_statistics = QFrame()
         self.frame_home_statistics.setObjectName("frame_home_statistics")
         self.frame_home_statistics.setMinimumSize(280, 120)
         self.frame_home_statistics.setMaximumSize(380, 180)
-        frame_home_layout = QVBoxLayout(self.frame_home_statistics)
+        self.statistics_layout = QVBoxLayout(self.frame_home_statistics)
 
-        self.page_home_statistics_text = QLabel(f"📊 Estatisticas do Dia")
-        self.page_home_statistics_text.setObjectName("page_home_statistics_text")
-
-        self.page_home_statistics_all = QLabel(f"🎯📝📋⫶☰ Total de Tarefas - {stats["total"]}")
-        self.page_home_statistics_all.setObjectName("page_home_statistics_all")
-        self.page_home_statistics_all.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.page_home_statistics_completed = QLabel(f"✅ Concluidas - {stats["completed"]}")
-        self.page_home_statistics_completed.setObjectName("page_home_statistics_completed")
-        self.page_home_statistics_completed.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.page_home_statistics_pending = QLabel(f"🎯📝📋⫶☰ Pendentes - {stats["incomplete"]}")
-        self.page_home_statistics_pending.setObjectName("page_home_statistics_pending")
-        self.page_home_statistics_pending.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        frame_home_layout.addWidget(self.page_home_statistics_text)
-        frame_home_layout.addWidget(self.page_home_statistics_all)
-        frame_home_layout.addWidget(self.page_home_statistics_completed)
-        frame_home_layout.addWidget(self.page_home_statistics_pending)
+        self.refresh_statistics()
 
     # Refresh
     # //////////////////////////////////////////////////////////
     def refresh(self):
+        # Refresh Cards
         self.clear_layout(self.today_tasks_layout)
         self.clear_layout(self.upcoming_tasks_layout)
 
@@ -283,6 +316,58 @@ class HomePage(QWidget):
 
             elif item.layout():
                 self.clear_layout(item.layout())
+
+    # Refresh Statistics
+    # //////////////////////////////////////////////////////////
+    def refresh_statistics(self):
+        while self.statistics_layout.count():
+            item = self.statistics_layout.takeAt(0)
+
+            if item.widget():
+                item.widget().deleteLater()
+
+        stats = self.task_manager.get_task_statistics(self.task_manager.get_today_tasks())
+
+        self.page_home_statistics_text = QLabel(f"📊 Estatisticas do Dia")
+        self.page_home_statistics_text.setObjectName("page_home_statistics_text")
+
+        self.page_home_statistics_all = QLabel(f"🎯📝📋⫶☰ Total de Tarefas - {stats["total"]}")
+        self.page_home_statistics_all.setObjectName("page_home_statistics_all")
+        self.page_home_statistics_all.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.page_home_statistics_completed = QLabel(f"✅ Concluidas - {stats["completed"]}")
+        self.page_home_statistics_completed.setObjectName("page_home_statistics_completed")
+        self.page_home_statistics_completed.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.page_home_statistics_pending = QLabel(f"🎯📝📋⫶☰ Pendentes - {stats["incomplete"]}")
+        self.page_home_statistics_pending.setObjectName("page_home_statistics_pending")
+        self.page_home_statistics_pending.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.statistics_layout.addWidget(self.page_home_statistics_text)
+        self.statistics_layout.addWidget(self.page_home_statistics_all)
+        self.statistics_layout.addWidget(self.page_home_statistics_completed)
+        self.statistics_layout.addWidget(self.page_home_statistics_pending)
+
+    # Update Task
+    # //////////////////////////////////////////////////////////
+    def update_task(self, task, checked, label):
+        task.is_completed = checked
+
+        if checked:
+            label.setStyleSheet(
+                "text-decoration: line-through;"
+            )
+        else:
+            label.setStyleSheet("")
+
+        for history_task in self.history_manager.tasks:
+            if history_task.id == task.id:
+                history_task.is_completed = checked
+                break
+
+        self.refresh_statistics()
+        self.task_manager.database.save_tasks(self.task_manager.tasks)
+        self.history_manager.database.save_history(self.history_manager.tasks)
 
     # Clicked Options Button
     # //////////////////////////////////////////////////////////
@@ -340,7 +425,9 @@ class HomePage(QWidget):
         )
 
         if reply == QMessageBox.Yes:
+            self.history_manager.mark_as_deleted(task_id)
             self.task_manager.remove_task(task_id)
+            self.refresh_statistics()
             self.refresh()
 
     # Apply Theme

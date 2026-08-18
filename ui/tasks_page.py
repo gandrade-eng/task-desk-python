@@ -12,6 +12,8 @@ from PySide6.QtWidgets import (
 )
 
 class TasksPage(QWidget):
+    add_task_page_requested = Signal()
+
     def __init__(self, settings, task_manager, history_manager):
         super().__init__()
 
@@ -70,6 +72,7 @@ class TasksPage(QWidget):
         self.tasks_header_button = QPushButton("➕ Adicionar")
         self.tasks_header_button.setObjectName("tasks_header_button")
         self.tasks_header_button.setMaximumWidth(160)
+        self.tasks_header_button.clicked.connect(self.add_task_page_requested.emit)
 
         self.tasks_header_layout.addWidget(self.tasks_header_title)
         self.tasks_header_layout.addWidget(self.tasks_header_button)
@@ -131,7 +134,7 @@ class TasksPage(QWidget):
         for task in history_tasks:
             self.create_task_card(task)
 
-        self.list_container_layout.addStretch()
+        # self.list_container_layout.addStretch()
 
     # Task Card
     def create_task_card(self, task):
@@ -139,25 +142,32 @@ class TasksPage(QWidget):
 
         frame_task = QFrame()
         frame_task.setObjectName("frame_task")
-        frame_task.setMinimumSize(280, 60)
-        frame_task.setMaximumSize(500, 80)
+        frame_task.setMinimumSize(400, 60)
+        # frame_task.setMaximumSize(500, 80)
 
         frame_task_layout = QHBoxLayout(frame_task)
 
-        page_task_text = QLabel(
-            f"{task.title}\nHora: {task.time.toString('HH:mm')}"
-        )
-        page_task_text.setObjectName("page_task_text")
-        page_task_text.setStyleSheet("color: black")
+        task_title = QLabel(task.title)
+        task_title.setObjectName("task_title")
+        task_title.setStyleSheet("color: black; border: none")
+
+        task_description = QLabel(task.description)
+        task_description.setObjectName("task_description")
+        task_description.setStyleSheet("color: black; border: none")
+
+        title_description_layout = QVBoxLayout()
+        title_description_layout.addWidget(task_title)
+        title_description_layout.addWidget(task_description)
 
         # Riscar
-        font = page_task_text.font()
+        font = task_title.font()
         font.setStrikeOut(True)
-        page_task_text.setFont(font)
+        task_title.setFont(font)
 
-        page_task_text2 = QLabel(task.date.toString("dd/MM"))
-        page_task_text2.setObjectName("page_task_text2")
-        page_task_text2.setStyleSheet("color: black")
+        date_time = QLabel(f"{task.date.toString("dd/MM/yyyy")}\n{task.time.toString('HH:mm')}")
+        date_time.setObjectName("date_time")
+        date_time.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        date_time.setStyleSheet("color: black; border: none")
 
         options_button = QPushButton("⋮")
         options_button.setFixedSize(35, 35)
@@ -184,9 +194,9 @@ class TasksPage(QWidget):
             lambda: self.show_task_options(task_id, options_button)
         )
 
-        frame_task_layout.addWidget(page_task_text)
+        frame_task_layout.addLayout(title_description_layout)
         frame_task_layout.addStretch()
-        frame_task_layout.addWidget(page_task_text2)
+        frame_task_layout.addWidget(date_time)
         frame_task_layout.addWidget(options_button)
 
         self.list_container_layout.addWidget(frame_task)
@@ -394,12 +404,17 @@ class TasksPage(QWidget):
         edit_action = menu.addAction("✏️  Editar")
         # self.edit_task.connect(self.open_edit_task)
 
-        details_action = menu.addAction("ℹ️  Detalhes")
+        # not implemented
+        # details_action = menu.addAction("ℹ️  Detalhes")
 
-        delete_action = menu.addAction("🗑️  Excluir")
-        delete_action.triggered.connect(
-            lambda: self.confirm_delete_task(task_id)
-        )
+        for task in self.history_manager.get_tasks():
+            if task.id == task_id:
+                if not task.is_deleted:
+                    delete_action = menu.addAction("🗑️  Excluir")
+                    delete_action.triggered.connect(
+                        lambda: self.confirm_delete_task(task_id)
+                    )
+                break
 
         pos = options_button.mapToGlobal(
             options_button.rect().bottomLeft()

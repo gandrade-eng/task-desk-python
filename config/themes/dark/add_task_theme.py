@@ -41,10 +41,12 @@ ADD_TASK = """
     }
 
     /* TIME INPUT */
-    QTimeEdit#time_input::up-button,
+    QTimeEdit#time_input::up-button {
+        image: url(icons/arrow_up_white.svg);
+    }
+
     QTimeEdit#time_input::down-button {
-        width: 0px;
-        height: 0px;
+        image: url(icons/arrow_down_white.svg);
     }
 
     /* Botão do calendário e do horário */

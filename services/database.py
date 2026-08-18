@@ -12,7 +12,7 @@
 # external imports
 import json
 # internal imports
-from models import Task
+from models import Task, HistoryTask
 
 class Database:
     def __init__(self):
@@ -61,7 +61,7 @@ class Database:
         tasks = []
 
         for task in data:
-            tasks.append(Task.from_dict(task))
+            tasks.append(HistoryTask.from_dict(task))
 
         return tasks 
 

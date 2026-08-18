@@ -2,7 +2,7 @@
 from datetime import datetime, date
 # internal imports
 from config import LANGUAGES
-from models import Task
+from models import HistoryTask
 
 # "active"
 # "completed"
@@ -24,7 +24,7 @@ class HistoryManager:
     def get_task_statistics(self, tasks):
         total = len(tasks)
 
-        completed = sum(task.completed for task in tasks)
+        completed = sum(task.is_completed for task in tasks)
 
         incomplete = total - completed
 
@@ -52,7 +52,16 @@ class HistoryManager:
     # Actions
     # //////////////////////////////////////////////////////////
     def add_history(self, new_task):
-            self.tasks.append(new_task)
+            history_task = HistoryTask(
+                new_task.id,
+                new_task.title,
+                new_task.description,
+                new_task.date,
+                new_task.time,
+                new_task.is_completed,
+                False
+            )
+            self.tasks.append(history_task)
     
             # Saving the file
             self.database.save_history(self.tasks)
@@ -60,6 +69,15 @@ class HistoryManager:
             # try / except ValueError:
             # date_str = input(LANGUAGES[language]["addTaskDate"])
             # due_date = datetime.strptime(date_str, "%d/%m/%Y")
+
+    def mark_as_deleted(self, task_id):
+        for task in self.tasks:
+            if task.id == task_id:
+                task.is_deleted = True
+                break
+
+        # Saving the file
+        self.database.save_history(self.tasks)
 
     # def update_history():
 

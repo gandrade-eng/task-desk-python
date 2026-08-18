@@ -51,7 +51,7 @@ class TaskManager:
     def get_task_statistics(self, tasks):
         total = len(tasks)
 
-        completed = sum(task.completed for task in tasks)
+        completed = sum(task.is_completed for task in tasks)
 
         incomplete = total - completed
 
@@ -81,14 +81,14 @@ class TaskManager:
 
     # Actions
     # //////////////////////////////////////////////////////////
-    def add_task(self, title, date, time, description, completed):
+    def add_task(self, title, date, time, description, is_completed):
         new_task = Task(
             id = self.history_manager.next_id(),
             title = title,
             date = date,
             time = time,
             description = description,
-            completed = completed
+            is_completed = is_completed
         )
 
         self.tasks.append(new_task)
@@ -96,8 +96,7 @@ class TaskManager:
         # Saving tasks
         self.database.save_tasks(self.tasks)
 
-        # Saving history
-        self.history_manager.add_history(new_task)
+        return new_task
 
         # try / except ValueError:
         # date_str = input(LANGUAGES[language]["addTaskDate"])

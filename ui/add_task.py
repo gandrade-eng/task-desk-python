@@ -7,7 +7,8 @@ from PySide6.QtWidgets import (
     QLabel, QWidget, QStackedWidget, 
     QApplication, QPushButton, QCheckBox,
     QFormLayout, QLineEdit, QDateEdit,
-    QTimeEdit, QTextEdit, QMessageBox
+    QTimeEdit, QTextEdit, QMessageBox,
+    QAbstractSpinBox
 )
 # internal imports
 from models import Task
@@ -18,14 +19,13 @@ from config import THEMES, LANGUAGES
 
 class AddTask(QWidget):
     task_created = Signal(str, QDate, QTime, str)
+    cancel_send_clicked = Signal()
 
     def __init__(self, settings):
         super().__init__()
 
         self.settings = settings
         self.create_page_addtask()
-
-        self.options_send.clicked.connect(self.on_send_clicked)
     
     def create_page_addtask(self):
         self.form = QFrame()
@@ -52,8 +52,12 @@ class AddTask(QWidget):
         self.date_input_label.setObjectName("date_input_label")
         self.date_input = QDateEdit()
         self.date_input.setObjectName("date_input")
+        self.date_input.setDate(QDate.currentDate())
+        self.date_input.setDisplayFormat("dd/MM/yyyy")
         self.date_input.setFixedHeight(38)
         self.date_input.setCalendarPopup(True)
+
+        # self.date_input.calendarWidget().setStyleSheet(calendar_style)
 
         self.date_layout = QVBoxLayout()
         self.date_layout.addWidget(self.date_input_label)
@@ -65,6 +69,7 @@ class AddTask(QWidget):
         self.time_input = QTimeEdit()
         self.time_input.setObjectName("time_input")
         self.time_input.setFixedHeight(38)
+        self.time_input.setDisplayFormat("HH:mm")
 
         self.time_layout = QVBoxLayout()
         self.time_layout.addWidget(self.time_input_label)
@@ -97,12 +102,14 @@ class AddTask(QWidget):
         self.options_send.setObjectName("options_send")
         self.options_send.setMinimumHeight(100)
         self.options_send.setMinimumWidth(100)
+        self.options_send.clicked.connect(self.on_send_clicked)
 
 
         self.options_cancel = QPushButton("Cancelar")
         self.options_cancel.setObjectName("options_cancel")
         self.options_cancel.setMinimumHeight(100)
         self.options_cancel.setMinimumWidth(100)
+        self.options_send.clicked.connect(self.cancel_send_clicked)
 
 
         self.options_layout = QHBoxLayout()
@@ -130,6 +137,11 @@ class AddTask(QWidget):
             self.time_input.time(),
             self.description_input.toPlainText()
         )
+
+        self.title_input.clear()
+        self.date_input.setDate(QDate.currentDate())
+        self.time_input.setTime(QTime(0, 0))
+        self.description_input.clear()
 
     # Apply Theme
     # //////////////////////////////////////////////////////////

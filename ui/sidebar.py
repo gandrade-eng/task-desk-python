@@ -140,17 +140,17 @@ class SideBar(QWidget):
 
 
         self.left_menu_home_button = customButton(
-            icon_path = "../task-desk-python/icons/home.svg",
+            icon_path = "../task-desk/icons/home.svg",
             is_activate = True
         )
 
         self.left_menu_tasks_button = customButton(
-            icon_path = "../task-desk-python/icons/task.svg",
+            icon_path = "../task-desk/icons/task.svg",
             is_activate = False,
         )
 
         self.left_menu_settings_button = customButton(
-            icon_path = "../task-desk-python/icons/settings.svg",
+            icon_path = "../task-desk/icons/settings.svg",
             is_activate = False,
         )
 

@@ -5,7 +5,8 @@
         "description": "vamooooo",
         "date": "4222-02-24",
         "time": "02:00",
-        "completed": false
+        "is_completed": false,
+        "is_deleted": false
     },
     {
         "id": 5,
@@ -13,7 +14,8 @@
         "description": "12312321",
         "date": "2244-01-01",
         "time": "23:00",
-        "completed": true
+        "is_completed": true,
+        "is_deleted": false
     },
     {
         "id": 6,
@@ -21,7 +23,8 @@
         "description": "12qwdqwdq",
         "date": "2332-01-01",
         "time": "00:00",
-        "completed": false
+        "is_completed": false,
+        "is_deleted": false
     },
     {
         "id": 7,
@@ -29,7 +32,8 @@
         "description": "testando vai vai",
         "date": "2333-01-01",
         "time": "04:00",
-        "completed": false
+        "is_completed": false,
+        "is_deleted": false
     },
     {
         "id": 8,
@@ -37,7 +41,8 @@
         "description": "esse",
         "date": "2026-08-04",
         "time": "04:00",
-        "completed": false
+        "is_completed": false,
+        "is_deleted": false
     },
     {
         "id": 9,
@@ -45,7 +50,8 @@
         "description": "esse",
         "date": "2027-08-04",
         "time": "04:00",
-        "completed": false
+        "is_completed": false,
+        "is_deleted": false
     },
     {
         "id": 10,
@@ -53,7 +59,8 @@
         "description": "b;lhijkbbbyh",
         "date": "2026-08-04",
         "time": "07:00",
-        "completed": false
+        "is_completed": false,
+        "is_deleted": false
     },
     {
         "id": 11,
@@ -61,7 +68,8 @@
         "description": "adadas",
         "date": "2000-01-01",
         "time": "00:00",
-        "completed": false
+        "is_completed": false,
+        "is_deleted": false
     },
     {
         "id": 12,
@@ -69,6 +77,241 @@
         "description": "",
         "date": "2026-08-13",
         "time": "00:00",
-        "completed": false
+        "is_completed": false,
+        "is_deleted": false
+    },
+    {
+        "id": 13,
+        "title": "dadadas",
+        "description": "",
+        "date": "2000-01-01",
+        "time": "00:00",
+        "is_completed": false,
+        "is_deleted": false
+    },
+    {
+        "id": 14,
+        "title": "dadadas",
+        "description": "",
+        "date": "2027-02-17",
+        "time": "00:00",
+        "is_completed": false,
+        "is_deleted": false
+    },
+    {
+        "id": 15,
+        "title": "teste1",
+        "description": "",
+        "date": "2026-08-20",
+        "time": "00:00",
+        "is_completed": true,
+        "is_deleted": true
+    },
+    {
+        "id": 16,
+        "title": "oiiii",
+        "description": "",
+        "date": "2026-08-18",
+        "time": "07:30",
+        "is_completed": false,
+        "is_deleted": false
+    },
+    {
+        "id": 17,
+        "title": "testando masi ",
+        "description": "",
+        "date": "2026-08-20",
+        "time": "07:00",
+        "is_completed": false,
+        "is_deleted": false
+    },
+    {
+        "id": 18,
+        "title": "aaaaaa",
+        "description": "",
+        "date": "2026-08-18",
+        "time": "03:00",
+        "is_completed": false,
+        "is_deleted": true
+    },
+    {
+        "id": 19,
+        "title": "1111",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "00:00",
+        "is_completed": false,
+        "is_deleted": false
+    },
+    {
+        "id": 20,
+        "title": "aaaa",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "00:00",
+        "is_completed": false,
+        "is_deleted": false
+    },
+    {
+        "id": 21,
+        "title": "bbbbb",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "00:00",
+        "is_completed": false,
+        "is_deleted": false
+    },
+    {
+        "id": 22,
+        "title": "cccc",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "00:00",
+        "is_completed": false,
+        "is_deleted": false
+    },
+    {
+        "id": 23,
+        "title": "ddddd",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "00:00",
+        "is_completed": false,
+        "is_deleted": false
+    },
+    {
+        "id": 24,
+        "title": "sadasd",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "00:00",
+        "is_completed": false,
+        "is_deleted": true
+    },
+    {
+        "id": 25,
+        "title": "sadasd",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "00:00",
+        "is_completed": true,
+        "is_deleted": true
+    },
+    {
+        "id": 26,
+        "title": "asdasda",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "00:00",
+        "is_completed": false,
+        "is_deleted": false
+    },
+    {
+        "id": 27,
+        "title": "asdadas",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "02:00",
+        "is_completed": false,
+        "is_deleted": false
+    },
+    {
+        "id": 28,
+        "title": "kasdkaskdaskas",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "00:00",
+        "is_completed": true,
+        "is_deleted": true
+    },
+    {
+        "id": 29,
+        "title": "history",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "00:00",
+        "is_completed": false,
+        "is_deleted": true
+    },
+    {
+        "id": 30,
+        "title": "kkkk",
+        "description": "",
+        "date": "2026-08-20",
+        "time": "07:58",
+        "is_completed": false,
+        "is_deleted": false
+    },
+    {
+        "id": 31,
+        "title": "asdasd",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "00:00",
+        "is_completed": false,
+        "is_deleted": true
+    },
+    {
+        "id": 31,
+        "title": "asdasdadas",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "00:00",
+        "is_completed": false,
+        "is_deleted": false
+    },
+    {
+        "id": 31,
+        "title": "ssss",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "00:00",
+        "is_completed": false,
+        "is_deleted": false
+    },
+    {
+        "id": 32,
+        "title": "",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "00:00",
+        "is_completed": false,
+        "is_deleted": true
+    },
+    {
+        "id": 33,
+        "title": "",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "00:00",
+        "is_completed": false,
+        "is_deleted": true
+    },
+    {
+        "id": 34,
+        "title": "",
+        "description": "",
+        "date": "2026-08-17",
+        "time": "00:00",
+        "is_completed": false,
+        "is_deleted": true
+    },
+    {
+        "id": 35,
+        "title": "aaa ebeee",
+        "description": "asda",
+        "date": "2026-08-20",
+        "time": "03:00",
+        "is_completed": false,
+        "is_deleted": false
+    },
+    {
+        "id": 36,
+        "title": "Prova de Paleontologia",
+        "description": "Cap 1, Cap 2",
+        "date": "2026-08-25",
+        "time": "16:00",
+        "is_completed": false,
+        "is_deleted": false
     }
 ]
